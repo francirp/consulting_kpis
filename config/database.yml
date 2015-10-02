@@ -1,0 +1,14 @@
+
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: consulting_kpis_dev
+  pool: 5
+  host: localhost
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: consulting_kpis_test
+  pool: 5
+  host: localhost
