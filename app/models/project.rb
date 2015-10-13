@@ -8,4 +8,16 @@ class Project < ActiveRecord::Base
     time_entries.pluck(:hours).map { |hour| roundup(hour) }.sum
   end
 
+  def profit
+    Metrics::Profit.new(project: self).value
+  end
+
+  def revenue
+    Metrics::Revenue.new(project: self).value
+  end
+
+  def costs
+    Metrics::Costs.new(project: self).value
+  end
+
 end
