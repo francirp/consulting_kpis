@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module ConsultingKpis
   class Application < Rails::Application
-    
+
       config.generators do |g|
         g.test_framework :rspec,
           fixtures: true,
@@ -18,7 +18,12 @@ module ConsultingKpis
           controller_specs: true,
           request_specs: false
         g.fixture_replacement :factory_girl, dir: "spec/factories"
-      end 
+      end
+
+    config.before_initialize do |app|
+      app.config.paths.add 'app/classes', :eager_load => true
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
