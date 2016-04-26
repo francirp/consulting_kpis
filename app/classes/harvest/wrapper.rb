@@ -20,6 +20,10 @@ class Harvest::Wrapper
     @clients ||= harvest.clients.all
   end
 
+  def users
+    @users ||= harvest.users.all
+  end
+
   def find_client(client_id)
     clients.detect {|client| client.id == client_id }
   end

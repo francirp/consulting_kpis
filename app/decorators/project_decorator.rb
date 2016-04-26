@@ -13,4 +13,8 @@ class ProjectDecorator < Draper::Decorator
     h.number_to_currency(object.profit.round, precision: 0)
   end
 
+  def profit_margin
+    h.number_to_percentage(object.profit_margin * 100, precision: 1)
+  end
+
 end

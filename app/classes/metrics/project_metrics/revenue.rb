@@ -1,4 +1,4 @@
-class Metrics::Revenue < Metrics::Base
+class Metrics::ProjectMetrics::Revenue < Metrics::ProjectMetrics
 
   def value
     project.hourly? ? calculate_revenue : revenue_from_db
@@ -11,7 +11,7 @@ class Metrics::Revenue < Metrics::Base
     end
 
     def revenue_from_db
-      project.revenue || 0.0
+      project.attributes["revenue"] || 0.0
     end
 
 end

@@ -1,7 +1,4 @@
-class Metrics::Profit < Metrics::Base
+class Profit
 
-  def value
-    project.revenue - project.costs
-  end
 
 end

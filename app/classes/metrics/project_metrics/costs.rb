@@ -1,4 +1,4 @@
-class Metrics::Costs < Metrics::Base
+class Metrics::ProjectMetrics::Costs < Metrics::ProjectMetrics
 
   def value
     hours * base_metrics.cost_per_hour

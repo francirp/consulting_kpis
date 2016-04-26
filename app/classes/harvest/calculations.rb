@@ -1,6 +1,6 @@
 module Harvest::Calculations
 
-  def roundup(float)
+  def self.roundup(float)
     return float if float.ceil == float.floor
     decimal = float - float.floor
     new_decimal = 0.0
@@ -14,6 +14,10 @@ module Harvest::Calculations
       new_decimal = 1.00
     end
     return float.floor + new_decimal
+  end
+
+  def roundup(float)
+    self.roundup(floats)
   end
 
 end

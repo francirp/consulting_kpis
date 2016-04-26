@@ -16,6 +16,7 @@ gem 'devise'
 gem 'figaro'
 gem 'bootstrap-sass'
 gem 'draper'
+gem 'decanter'
 
 group :development do
   gem 'web-console', '~> 2.0'

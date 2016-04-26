@@ -37,4 +37,7 @@ class Harvest::Pull < Harvest::Wrapper
     end
   end
 
+  def pull_harvest_users
+
+  end
 end

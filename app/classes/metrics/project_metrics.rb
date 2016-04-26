@@ -1,4 +1,4 @@
-class Metrics::Base
+class Metrics::ProjectMetrics
 
   attr_reader :project, :base_metrics
 
