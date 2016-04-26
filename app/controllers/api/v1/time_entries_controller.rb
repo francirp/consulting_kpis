@@ -4,15 +4,7 @@ class Api::V1::TimeEntriesController < Api::ApplicationController
   def index
     respond_to do |format|
       format.json {
-        render json: { entries: @filter.all }
-      }
-    end
-  end
-
-  def team_billable
-    respond_to do |format|
-      format.json {
-        render json: @filter.billable_hours_by_team_member
+        render json: @filter.hours_by_team_member
       }
     end
   end

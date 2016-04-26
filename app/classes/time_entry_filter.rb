@@ -27,12 +27,28 @@ class TimeEntryFilter
     @users ||= harvest_wrapper.users.find_all(&:is_active?)
   end
 
-  def billable_hours_by_team_member
+  # def billable_hours_by_team_member
+  #   hours = active_users.map do |user|
+  #     entries = harvest.reports.time_by_user(user, start_date, end_date, billable: true)
+  #     hash = {
+  #       name: "#{user['first_name']} #{user['last_name']}",
+  #       hours: TimeEntry.rounded_hours(entries)
+  #     }
+  #     hash
+  #   end
+  #   hours
+  # end
+
+  def hours_by_team_member
     hours = active_users.map do |user|
-      entries = harvest.reports.time_by_user(user, start_date, end_date, billable: true)
+      billable_entries = harvest.reports.time_by_user(user, start_date, end_date, billable: true)
+      nonbillable_entries = harvest.reports.time_by_user(user, start_date, end_date, billable: false)
+      billable_hours = TimeEntry.rounded_hours(billable_entries)
+      nonbillable_hours = TimeEntry.rounded_hours(nonbillable_entries)
       hash = {
         name: "#{user['first_name']} #{user['last_name']}",
-        hours: TimeEntry.rounded_hours(entries)
+        billable_hours: billable_hours,
+        nonbillable_hours: nonbillable_hours
       }
       hash
     end
