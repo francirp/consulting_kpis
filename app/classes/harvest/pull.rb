@@ -3,7 +3,7 @@ class Harvest::Pull < Harvest::Wrapper
   attr_reader :start_date, :end_date
 
   def after_init(args = {})
-    @start_date = args.fetch(:start_date, Date.new(2010,1,1))
+    @start_date = args.fetch(:start_date, Date.today - 2.months)
     @end_date = args.fetch(:end_date, Date.today.end_of_year)
   end
 
