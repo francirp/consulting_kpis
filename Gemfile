@@ -17,6 +17,9 @@ gem 'figaro'
 gem 'bootstrap-sass'
 gem 'draper'
 gem 'decanter'
+gem 'google-api-client'
+gem 'google_drive'
+gem 'delayed_job_active_record'
 
 group :development do
   gem 'web-console', '~> 2.0'
