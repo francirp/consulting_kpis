@@ -9,6 +9,6 @@ task :refresh_harvest_data => :environment do
   h.assign_clients_to_projects
   puts "exporting data to google sheets"
   s = ExportData::ToGoogleSheets.new
-  s.delay.update
+  s.update
   puts "done."
 end
