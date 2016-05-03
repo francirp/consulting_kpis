@@ -19,7 +19,7 @@ gem 'draper'
 gem 'decanter'
 gem 'google-api-client'
 gem 'google_drive'
-gem 'delayed_job_active_record'
+# gem 'delayed_job_active_record'
 gem 'rails_12factor', group: :production
 
 group :development do
