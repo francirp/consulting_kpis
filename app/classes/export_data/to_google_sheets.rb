@@ -26,6 +26,7 @@ class ExportData::ToGoogleSheets
     @worksheet = @spreadsheet.worksheets.detect {|ws| ws.worksheet_feed_url.split("/").last == WORKSHEET }
     set_headers
     set_rows
+    set_timestamp
     save
   end
 
@@ -41,7 +42,6 @@ class ExportData::ToGoogleSheets
       HEADERS.each_with_index do |header, index|
         worksheet[1, index + 1] = header
       end
-      worksheet[1, HEADERS.count + 1] = Time.now.in_time_zone(-5).strftime("%m/%d/%Y at %I:%M %p")
       save
     end
 
@@ -63,5 +63,9 @@ class ExportData::ToGoogleSheets
 
     def delete_rows
       worksheet.delete_rows(2, )
+    end
+
+    def set_timestamp
+      worksheet[1, HEADERS.count + 1] = Time.now.in_time_zone(-5).strftime("%m/%d/%Y at %I:%M %p")
     end
 end
