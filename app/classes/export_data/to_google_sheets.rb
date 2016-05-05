@@ -25,9 +25,9 @@ class ExportData::ToGoogleSheets
     @session = GoogleDrive.saved_session("#{Rails.root}/public/config.json")
     @spreadsheet = @session.spreadsheet_by_key(SPREADSHEET)
     @worksheet = @spreadsheet.worksheets.detect {|ws| ws.worksheet_feed_url.split("/").last == WORKSHEET }
-    set_headers
+    # set_headers
     update_cells
-    set_timestamp
+    # set_timestamp
   end
 
   private
@@ -48,12 +48,10 @@ class ExportData::ToGoogleSheets
     def update_cells
       puts "starting rows"
       chunk = 250
-      time_entry_rows = TimeEntry.rows
       current = 0
-      while current <= time_entry_rows.count
-        # i.e. 0 - 249,
-        rows = time_entry_rows.find_all.with_index {|row, index| index >= current && index < current + chunk }
-        worksheet.update_cells(2 + current, 1, rows)
+      time_entry_rows = TimeEntry.rows
+      time_entry_rows.each_slice(chunk) do |rows|
+        worksheet.update_cells(2 + chunk, 1, rows)
         save
         current += chunk
       end
