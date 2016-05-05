@@ -17,8 +17,7 @@ gem 'figaro'
 gem 'bootstrap-sass'
 gem 'draper'
 gem 'decanter'
-gem 'google-api-client'
-gem 'google_drive'
+gem 'google_drive', '~> 2.0.0.pre1'
 # gem 'delayed_job_active_record'
 gem 'rails_12factor', group: :production
 

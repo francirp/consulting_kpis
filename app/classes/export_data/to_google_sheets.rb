@@ -25,7 +25,7 @@ class ExportData::ToGoogleSheets
     @spreadsheet = @session.spreadsheet_by_key(SPREADSHEET)
     @worksheet = @spreadsheet.worksheets.detect {|ws| ws.worksheet_feed_url.split("/").last == WORKSHEET }
     set_headers
-    set_rows
+    update_cells
     set_timestamp
     save
   end
@@ -45,21 +45,27 @@ class ExportData::ToGoogleSheets
       save
     end
 
-    def set_rows
+    def update_cells
       time_entry_rows = TimeEntry.rows
       puts "starting rows"
-      time_entry_rows.each_with_index do |time_entry_attrs, row_num|
-        puts "starting row #{row_num}"
-        # start at row 2 (row 1 for headers)
-        row_num = row_num + 2
-        time_entry_attrs.each_with_index do |attr, column_num|
-          puts "starting column #{column_num}"
-          # start at column 1
-          column_num = column_num + 1
-          worksheet[row_num, column_num] = attr
-        end
-      end
+      worksheet.update_cells(2, 1, time_entry_rows)
     end
+
+    # def set_rows
+    #   time_entry_rows = TimeEntry.rows
+    #   puts "starting rows"
+    #   time_entry_rows.each_with_index do |time_entry_attrs, row_num|
+    #     puts "starting row #{row_num}"
+    #     # start at row 2 (row 1 for headers)
+    #     row_num = row_num + 2
+    #     time_entry_attrs.each_with_index do |attr, column_num|
+    #       puts "starting column #{column_num}"
+    #       # start at column 1
+    #       column_num = column_num + 1
+    #       worksheet[row_num, column_num] = attr
+    #     end
+    #   end
+    # end
 
     def delete_rows
       worksheet.delete_rows(2, )
