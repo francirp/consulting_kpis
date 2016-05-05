@@ -33,7 +33,7 @@ class TimeEntry < ActiveRecord::Base
     users = Harvest::Wrapper.new.users
     projects_by_id = Project.all.group_by(&:id)
     clients_by_id = Client.all.group_by(&:id)
-    time_entries = self.current_year.map do |time_entry|
+    time_entries = self.current_year.map.with_index do |time_entry, index|
       date = time_entry.spent_at
       display_date = date.strftime('%m/%d/%Y')
       project = projects_by_id[time_entry.project_id].first
@@ -46,6 +46,7 @@ class TimeEntry < ActiveRecord::Base
       # TODO: fix week calc
       week = date.strftime("%U").to_i
       row = [
+        index + 2,
         display_date,
         client_name,
         project_name,

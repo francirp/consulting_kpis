@@ -27,7 +27,6 @@ class ExportData::ToGoogleSheets
     set_headers
     update_cells
     set_timestamp
-    save
   end
 
   private
@@ -46,32 +45,21 @@ class ExportData::ToGoogleSheets
     end
 
     def update_cells
-      time_entry_rows = TimeEntry.rows
       puts "starting rows"
-      worksheet.update_cells(2, 1, time_entry_rows)
-    end
-
-    # def set_rows
-    #   time_entry_rows = TimeEntry.rows
-    #   puts "starting rows"
-    #   time_entry_rows.each_with_index do |time_entry_attrs, row_num|
-    #     puts "starting row #{row_num}"
-    #     # start at row 2 (row 1 for headers)
-    #     row_num = row_num + 2
-    #     time_entry_attrs.each_with_index do |attr, column_num|
-    #       puts "starting column #{column_num}"
-    #       # start at column 1
-    #       column_num = column_num + 1
-    #       worksheet[row_num, column_num] = attr
-    #     end
-    #   end
-    # end
-
-    def delete_rows
-      worksheet.delete_rows(2, )
+      chunk = 250
+      time_entry_rows = TimeEntry.rows
+      current = 0
+      while current <= time_entry_rows.count
+        # i.e. 0 - 249,
+        rows = time_entry_rows.find_all.with_index {|row, index| index >= current && index < current + chunk }
+        worksheet.update_cells(2 + current, 1, rows)
+        save
+        current += chunk
+      end
     end
 
     def set_timestamp
       worksheet[1, HEADERS.count + 1] = Time.now.in_time_zone(-5).strftime("%m/%d/%Y at %I:%M %p")
+      save
     end
 end
