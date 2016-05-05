@@ -3,6 +3,7 @@ class ExportData::ToGoogleSheets
   SPREADSHEET = '1ZoJx5ZtwFu10v6dB5I57EesotO_UTkc5HutZShgOj_s'
   WORKSHEET = 'o5mnsi6'
   HEADERS = [
+    'Rows',
     'Date',
     'Client',
     'Project',
