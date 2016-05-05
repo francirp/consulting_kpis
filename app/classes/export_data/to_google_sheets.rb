@@ -25,9 +25,9 @@ class ExportData::ToGoogleSheets
     @session = GoogleDrive.saved_session("#{Rails.root}/public/config.json")
     @spreadsheet = @session.spreadsheet_by_key(SPREADSHEET)
     @worksheet = @spreadsheet.worksheets.detect {|ws| ws.worksheet_feed_url.split("/").last == WORKSHEET }
-    # set_headers
+    set_headers
     update_cells
-    # set_timestamp
+    set_timestamp
   end
 
   private
