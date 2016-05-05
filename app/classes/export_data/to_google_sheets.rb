@@ -51,7 +51,7 @@ class ExportData::ToGoogleSheets
       current = 0
       time_entry_rows = TimeEntry.rows
       time_entry_rows.each_slice(chunk) do |rows|
-        worksheet.update_cells(2 + chunk, 1, rows)
+        worksheet.update_cells(2 + current, 1, rows)
         save
         current += chunk
       end
