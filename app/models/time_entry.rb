@@ -37,6 +37,7 @@ class TimeEntry < ActiveRecord::Base
       date = time_entry.spent_at
       display_date = date.strftime('%m/%d/%Y')
       project = projects_by_id[time_entry.project_id].first
+      next unless project.client_id
       client = clients_by_id[project.client_id].first
       client_name = client.try(:name)
       user = users.detect { |u| u["id"] == time_entry.harvest_user_id }
@@ -61,7 +62,7 @@ class TimeEntry < ActiveRecord::Base
         week
       ]
       row
-    end
+    end.compact
     return time_entries
   end
 end

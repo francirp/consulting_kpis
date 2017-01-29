@@ -28,6 +28,7 @@ class ExportData::ToGoogleSheets
     set_headers
     update_cells
     set_timestamp
+    save
   end
 
   private
@@ -42,7 +43,6 @@ class ExportData::ToGoogleSheets
       HEADERS.each_with_index do |header, index|
         worksheet[1, index + 1] = header
       end
-      save
     end
 
     def update_cells
@@ -52,13 +52,11 @@ class ExportData::ToGoogleSheets
       time_entry_rows = TimeEntry.rows
       time_entry_rows.each_slice(chunk) do |rows|
         worksheet.update_cells(2 + current, 1, rows)
-        save
         current += chunk
       end
     end
 
     def set_timestamp
       worksheet[1, HEADERS.count + 1] = Time.now.in_time_zone(-5).strftime("%m/%d/%Y at %I:%M %p")
-      save
     end
 end
