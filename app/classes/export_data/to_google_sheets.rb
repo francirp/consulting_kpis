@@ -1,7 +1,7 @@
 class ExportData::ToGoogleSheets
   attr_reader :session, :worksheet, :spreadsheet
-  SPREADSHEET = '1ZoJx5ZtwFu10v6dB5I57EesotO_UTkc5HutZShgOj_s'
-  WORKSHEET = 'o5mnsi6'
+  SPREADSHEET = ENV['SPREADSHEET']
+  WORKSHEET = ENV['WORKSHEET']
   HEADERS = [
     'Rows',
     'Date',
@@ -33,7 +33,7 @@ class ExportData::ToGoogleSheets
 
   private
 
-    def save
+    def save 
       puts "saving worksheet"
       worksheet.save
     end
@@ -47,14 +47,15 @@ class ExportData::ToGoogleSheets
 
     def update_cells
       puts "starting rows"
-      chunk = 250
+      chunk = 50
       current = 0
       time_entry_rows = TimeEntry.rows
       time_entry_rows.each_slice(chunk) do |rows|
         worksheet.update_cells(2 + current, 1, rows)
+        worksheet.save
         current += chunk
       end
-    end
+    end    
 
     def set_timestamp
       worksheet[1, HEADERS.count + 1] = Time.now.in_time_zone(-5).strftime("%m/%d/%Y at %I:%M %p")
