@@ -8,7 +8,17 @@ task :refresh_harvest_data => :environment do
   puts "assigning clients to projects"
   h.assign_clients_to_projects
   puts "exporting data to google sheets"
-  s = ExportData::ToGoogleSheets.new
-  s.update
+  hours_updater = ExportData::ToGoogleSheets::Hours.new
+  hours_updater.update
+
+  invoice_updater = ExportData::ToGoogleSheets::Invoices.new
+  invoice_updater.update
   puts "done."
+end
+
+task :refresh_invoices => :environment do
+  puts 'starting invoice updater...'
+  invoice_updater = ExportData::ToGoogleSheets::Invoices.new
+  invoice_updater.update
+  puts 'done.'
 end
