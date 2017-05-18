@@ -17,7 +17,7 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
 
   private
 
-    def worksheet
+    def worksheet_key
       ENV['WORKSHEET']
     end
 
