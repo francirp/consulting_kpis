@@ -8,7 +8,17 @@ task :refresh_harvest_data => :environment do
   puts "assigning clients to projects"
   h.assign_clients_to_projects
   puts "exporting data to google sheets"
-  hours_updater = ExportData::ToGoogleSheets::Hours.new
+
+  month_one = Date.today.strftime('%m')[0..2]
+  month_two = (Date.today - 1.month).strftime('%m')[0..2]
+  worksheets = [
+    worksheets_by_month[month_one],
+    worksheets_by_month[month_two],
+  ]
+
+  worksheets.each do |worksheet|
+    ExportData::ToGoogleSheets::Hours.new(worksheet: )
+  hours_updater =
   hours_updater.update
 
   invoice_updater = ExportData::ToGoogleSheets::Invoices.new

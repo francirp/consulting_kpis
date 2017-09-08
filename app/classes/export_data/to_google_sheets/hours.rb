@@ -1,4 +1,6 @@
 class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
+  attr_reader :month
+
   HEADERS = [
     'Rows',
     'Date',
@@ -17,8 +19,13 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
 
   private
 
+    def after_init(args)
+      @month = args[:month]
+    end
+
     def worksheet_key
-      ENV['WORKSHEET']
+      # ENV['WORKSHEET']
+      WORKSHEETS_BY_MONTH[month]
     end
 
     def headers
