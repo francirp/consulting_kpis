@@ -1,69 +1,41 @@
 class ExportData::ToGoogleSheets
-  attr_reader :session, :worksheet, :spreadsheet
+  include ExportData::GoogleSheetsWrapper
+  KPIS_SPREADSHEET = '1ZoJx5ZtwFu10v6dB5I57EesotO_UTkc5HutZShgOj_s'
 
-  def initialize(args = {})
-    @session = GoogleDrive.saved_session("#{Rails.root}/public/config.json")
-    key = args.fetch(:spreadsheet_key, spreadsheet_key)
-    @spreadsheet = @session.spreadsheet_by_key(key)
-    @worksheet = @spreadsheet.worksheets.detect {|ws| ws.worksheet_feed_url.split("/").last == worksheet_key }
-    after_init(args)
+  def after_init(args)
+    # hook
   end
 
   def update
-    set_headers
-    update_cells
-    set_timestamp
-    save
+    value_range = Google::Apis::SheetsV4::ValueRange.new
+    value_range.major_dimension = 'ROWS'
+    value_range.range = range
+    value_range.values = array_of_arrays
+    value_range.values.unshift(headers)
+
+    sheets_service.update_spreadsheet_value(
+      spreadsheet_id,
+      value_range.range,
+      value_range,
+      value_input_option: 'RAW'
+    )
   end
 
   private
 
-  def after_init(_args = {})
-    # hook for subclasses
-  end
-
-  def spreadsheet_key
-    ENV['SPREADSHEET']
-  end
-
-  # Interface methods
-  def worksheet_key
-    raise "worksheet_key method is required by #{self.class.name}"
-  end
-
-  def headers
-    raise "headers method is required by #{self.class.name}"
+  def range
+    raise 'range method is required'
   end
 
   def array_of_arrays
-    raise "array_of_arrays method is required by #{self.class.name}"
-  end
-  # End Interface Methods
-
-  def save 
-    puts "saving worksheet"
-    worksheet.save
+    raise 'array_of_arrays method is required'
   end
 
-  def set_headers
-    puts "starting headers"
-    headers.each_with_index do |header, index|
-      worksheet[1, index + 1] = header
-    end
+  def headers
+    raise 'headers method is required'
   end
 
-  def update_cells
-    puts "starting rows"
-    chunk = 50
-    current = 0
-    array_of_arrays.each_slice(chunk) do |rows|
-      worksheet.update_cells(2 + current, 1, rows)
-      worksheet.save
-      current += chunk
-    end
-  end
-
-  def set_timestamp
-    worksheet[1, headers.count + 1] = Time.now.in_time_zone(-5).strftime("%m/%d/%Y at %I:%M %p")
+  def spreadsheet_id
+    raise 'spreadsheet_id method is required'
   end
 end

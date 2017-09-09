@@ -155,6 +155,7 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     memoist (0.15.0)
+    memory_profiler (0.9.8)
     method_source (0.8.2)
     mime-types (2.99.3)
     mini_portile2 (2.1.0)
@@ -313,11 +314,13 @@ DEPENDENCIES
   factory_girl_rails
   faker
   figaro
+  google-api-client
   google_drive
   harvested
   jbuilder (~> 2.0)
   jquery-rails
   launchy
+  memory_profiler
   pg
   pry-nav
   pry-rails
@@ -341,4 +344,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.12.5
+   1.14.6

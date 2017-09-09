@@ -21,12 +21,8 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
 
   private
 
-  def worksheet_key
-    ENV['INVOICE_WORKSHEET']
-  end
-
-  def headers
-    HEADERS
+  def range
+    'Invoices!A1'
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -52,6 +48,15 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
         ''
       ]
     end
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def headers
+    HEADERS
+  end
+
+  def spreadsheet_id
+    KPIS_SPREADSHEET
   end
 
   def pull_invoices

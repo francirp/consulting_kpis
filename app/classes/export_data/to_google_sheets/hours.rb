@@ -17,15 +17,19 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
 
   private
 
-    def worksheet_key
-      ENV['WORKSHEET']
-    end
+  def range
+    'CY - Harvest Export!A1'
+  end
 
-    def headers
-      HEADERS
-    end
+  def array_of_arrays
+    TimeEntry.rows
+  end
 
-    def array_of_arrays
-      TimeEntry.rows
-    end
+  def headers
+    HEADERS
+  end
+
+  def spreadsheet_id
+    KPIS_SPREADSHEET
+  end
 end

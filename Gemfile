@@ -20,6 +20,7 @@ gem 'decanter'
 gem 'google_drive'
 # gem 'delayed_job_active_record'
 gem 'rails_12factor', group: :production
+gem 'google-api-client'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -27,6 +28,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'quiet_assets'
+  gem 'memory_profiler'
 end
 
 group :development, :test do
