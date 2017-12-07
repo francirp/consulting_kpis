@@ -26,7 +26,7 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
   end
 
   def headers
-    HEADERS
+    HEADERS + [Time.now.utc.strftime('%m/%d/%Y')]
   end
 
   def spreadsheet_id

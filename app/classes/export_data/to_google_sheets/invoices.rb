@@ -52,7 +52,7 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
   # rubocop:enable Metrics/MethodLength
 
   def headers
-    HEADERS
+    HEADERS + [Time.now.utc.strftime('%m/%d/%Y')]
   end
 
   def spreadsheet_id
