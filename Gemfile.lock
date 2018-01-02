@@ -218,7 +218,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
-    rdoc (4.2.0)
+    rdoc (4.3.0)
     representable (2.3.0)
       uber (~> 0.0.7)
     request_store (1.2.0)
@@ -345,4 +345,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.14.6
+   1.16.1
