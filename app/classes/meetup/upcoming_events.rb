@@ -38,5 +38,46 @@ module Meetup
         page: events_per,
       }
     end
+
+    def pull_events
+      get['events'].map do |event_hash|
+        pull_event(event_hash)
+      end
+    end
+
+    def pull_event(event_hash)
+      duration = event_hash['duration'] || 0.0
+      duration = (duration / 1000.0 / 60.0 / 60.0).round(1)
+      term = map_term(event_hash)
+      local_time = convert_local_time(event_hash['local_time'])
+      waitlisted = event_hash['waitlist_count'] > 0 ? 'Yes' : 'No'        
+
+      Event.new(
+        group: event_hash.dig('group', 'name'),
+        name: event_hash['name'],
+        date: event_hash['local_date'],
+        time: local_time,
+        duration: duration,
+        waitlisted: waitlisted,
+        link: event_hash['link'],
+        venue: event_hash.dig('venue', 'name'),
+        map_link: term.present? ? URI.escape("https://maps.google.com/?q=#{term}") : nil,
+        source: 'Meetup'
+      )
+    end
+
+    def map_term(event)
+      venue = event.dig('venue', 'name')
+      address_1 = event.dig('venue', 'address_1')
+      address_2 = event.dig('venue', 'address_2')
+      city = event.dig('venue', 'city')
+      state = event.dig('venue', 'state')
+      [venue, address_1, address_2, city, state].compact.join(', ')
+    end
+
+    def convert_local_time(time_string)
+      time = Time.parse(time_string)
+      time.strftime('%l %P')
+    end\
   end
 end

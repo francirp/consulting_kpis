@@ -322,6 +322,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   memory_profiler
+  nokogiri
   pg
   pry-nav
   pry-rails

@@ -22,6 +22,7 @@ gem 'google_drive'
 gem 'rails_12factor', group: :production
 gem 'google-api-client'
 gem 'httparty'
+gem 'nokogiri'
 
 group :development do
   gem 'web-console', '~> 2.0'
