@@ -22,7 +22,7 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
   private
 
   def range
-    'Invoices!A1'
+    'Harvest Invoices!A1'
   end
 
   # rubocop:disable Metrics/MethodLength

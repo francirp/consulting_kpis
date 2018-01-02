@@ -18,7 +18,7 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
   private
 
   def range
-    'CY - Harvest Export!A1'
+    'Harvest Hours!A1'
   end
 
   def array_of_arrays
