@@ -16,6 +16,9 @@ task :refresh_harvest_data => :environment do
   invoice_updater = ExportData::ToGoogleSheets::Invoices.new
   invoice_updater.update
 
+  events_updater = ExportData::ToGoogleSheets::Events.new
+  events_updater.update
+
   puts "done."
 end
 
@@ -30,6 +33,14 @@ task :push_hours => :environment do
   puts "exporting data to google sheets"
   hours_updater = ExportData::ToGoogleSheets::Hours.new
   hours_updater.update
+
+  puts "done."
+end
+
+task :refresh_events => :environment do
+  puts "pulling event data and pushing to google sheets"
+  events_updater = ExportData::ToGoogleSheets::Events.new
+  events_updater.update
 
   puts "done."
 end

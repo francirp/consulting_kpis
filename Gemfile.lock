@@ -317,6 +317,7 @@ DEPENDENCIES
   google-api-client
   google_drive
   harvested
+  httparty
   jbuilder (~> 2.0)
   jquery-rails
   launchy

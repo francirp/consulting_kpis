@@ -1,6 +1,7 @@
 class ExportData::ToGoogleSheets
   include ExportData::GoogleSheetsWrapper
-  KPIS_SPREADSHEET = '1ZoJx5ZtwFu10v6dB5I57EesotO_UTkc5HutZShgOj_s'
+  KPIS_SPREADSHEET = '1ZoJx5ZtwFu10v6dB5I57EesotO_UTkc5HutZShgOj_s'.freeze
+  EVENTS_SPREADSHEET = '16iENqAuXt1S5Z62c0km00PKgISPsbMHEkBWy0M8aWdQ'.freeze
 
   def after_init(args)
     # hook
