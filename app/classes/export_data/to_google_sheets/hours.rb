@@ -12,7 +12,8 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
     'Last Name',
     'Year',
     'Month',
-    'Week'
+    'Week',
+    'Maintenance?'
   ]
 
   private

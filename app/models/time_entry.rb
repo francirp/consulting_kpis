@@ -29,6 +29,10 @@ class TimeEntry < ActiveRecord::Base
     Harvest::Calculations.roundup(hours)
   end
 
+  def maintenance?
+    project_name == 'Monthly Maintenance'
+  end
+
   def self.rows
     users = Harvest::Wrapper.new.users
     projects_by_id = Project.all.group_by(&:id)
@@ -59,7 +63,8 @@ class TimeEntry < ActiveRecord::Base
         user['last_name'],
         date.year,
         date.month,
-        week
+        week,
+        time_entry.maintenance?
       ]
       row
     end.compact

@@ -1,5 +1,4 @@
 class Harvest::HarvestProject < Harvest::Wrapper
-
   attr_reader :project_id, :project, :start_date, :end_date
 
   def rounded_hours
@@ -27,7 +26,9 @@ class Harvest::HarvestProject < Harvest::Wrapper
   end
 
   def create
-    local_project = ::Project.find_by_harvest_id(project.id) || ::Project.create(to_h)
+    local_project = ::Project.find_by_harvest_id(project.id) || ::Project.new(to_h)
+    local_project.attributes = to_h
+    local_project.save
 
     billable_harvest_time_entries.each do |harvest_time_entry|
       find_or_create_entry(local_project, harvest_time_entry, true)
@@ -72,5 +73,4 @@ class Harvest::HarvestProject < Harvest::Wrapper
         hourly: project.hourly_rate.present?
       }
     end
-
 end
