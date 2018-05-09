@@ -30,7 +30,7 @@ class TimeEntry < ActiveRecord::Base
   end
 
   def maintenance?
-    project_name == 'Monthly Maintenance'
+    project.try(:name) == 'Monthly Maintenance'
   end
 
   def self.rows
