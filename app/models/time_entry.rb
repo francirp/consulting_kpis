@@ -37,7 +37,7 @@ class TimeEntry < ActiveRecord::Base
     users = Harvest::Wrapper.new.users
     projects_by_id = Project.all.group_by(&:id)
     clients_by_id = Client.all.group_by(&:id)
-    time_entries = self.current_year.earliest.map.with_index do |time_entry, index|
+    time_entries = self.current_year.earliest.includes(:project).map.with_index do |time_entry, index|
       date = time_entry.spent_at
       display_date = date.strftime('%m/%d/%Y')
       project = projects_by_id[time_entry.project_id].first
