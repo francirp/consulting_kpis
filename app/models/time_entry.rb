@@ -34,7 +34,7 @@ class TimeEntry < ActiveRecord::Base
   end
 
   def streamlined_checkout?
-    project.try(:client) == 'Centaman'
+    project.try(:client).try(:name) == 'Centaman'
   end
 
   def self.rows
