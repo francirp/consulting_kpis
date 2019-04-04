@@ -13,7 +13,8 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
     'Year',
     'Month',
     'Week',
-    'Maintenance?'
+    'Maintenance?',
+    'Streamlined Checkout?',
   ]
 
   private

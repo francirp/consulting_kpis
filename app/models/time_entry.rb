@@ -33,6 +33,10 @@ class TimeEntry < ActiveRecord::Base
     project.try(:name) == 'Monthly Maintenance'
   end
 
+  def streamlined_checkout?
+    project.try(:client) == 'Centaman'
+  end
+
   def self.rows
     users = Harvest::Wrapper.new.users
     projects_by_id = Project.all.group_by(&:id)
@@ -64,7 +68,8 @@ class TimeEntry < ActiveRecord::Base
         date.year,
         date.month,
         week,
-        time_entry.maintenance?
+        time_entry.maintenance?,
+        time_entry.streamlined_checkout?,
       ]
       row
     end.compact
