@@ -17,6 +17,7 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
     'Streamlined Checkout?',
     'Billable Rate',
     'Cost Rate',
+    'Cost',
   ]
 
   private

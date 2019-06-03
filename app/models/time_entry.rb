@@ -29,6 +29,11 @@ class TimeEntry < ActiveRecord::Base
     Harvest::Calculations.roundup(hours)
   end
 
+  def cost
+    return 0.00 unless rounded_hours && cost_rate
+    rounded_hours * cost_rate
+  end
+
   def maintenance?
     project.try(:name) == 'Monthly Maintenance'
   end
@@ -72,6 +77,7 @@ class TimeEntry < ActiveRecord::Base
         time_entry.streamlined_checkout?,
         time_entry.billable_rate,
         time_entry.cost_rate,
+        time_entry.cost,
       ]
       row
     end.compact
