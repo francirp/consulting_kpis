@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502220058) do
+ActiveRecord::Schema.define(version: 20190603120953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,8 @@ ActiveRecord::Schema.define(version: 20160502220058) do
     t.datetime "updated_at",         null: false
     t.integer  "project_id"
     t.boolean  "billable"
+    t.float    "billable_rate"
+    t.float    "cost_rate"
   end
 
   add_index "time_entries", ["project_id"], name: "index_time_entries_on_project_id", using: :btree

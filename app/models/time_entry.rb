@@ -70,6 +70,8 @@ class TimeEntry < ActiveRecord::Base
         week,
         time_entry.maintenance?,
         time_entry.streamlined_checkout?,
+        time_entry.billable_rate,
+        time_entry.cost_rate,
       ]
       row
     end.compact

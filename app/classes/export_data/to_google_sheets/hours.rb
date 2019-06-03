@@ -15,6 +15,8 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
     'Week',
     'Maintenance?',
     'Streamlined Checkout?',
+    'Billable Rate',
+    'Cost Rate',
   ]
 
   private

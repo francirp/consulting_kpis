@@ -20,7 +20,9 @@ class Harvest::HarvestTimeEntry < Harvest::Wrapper
       harvest_updated_at: harvest_time_entry.updated_at,
       is_billed: harvest_time_entry.is_billed,
       harvest_invoice_id: harvest_time_entry.invoice_id,
-      billable: billable
+      billable: billable,
+      billable_rate: harvest_time_entry.billable_rate,
+      cost_rate: harvest_time_entry.cost_rate,
     }
   end
 
