@@ -48,5 +48,6 @@ end
 task :pull_budget_amounts => :environment do
   puts "pulling monthly budget amounts and storing in database"
   PullBudgetAmounts.new.call
+  ExportData::ToGoogleSheets::DailyForecasts.new.update
   puts "done."
 end

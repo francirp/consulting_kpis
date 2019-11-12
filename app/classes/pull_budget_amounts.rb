@@ -1,21 +1,20 @@
 class PullBudgetAmounts
   include ExportData::GoogleSheetsWrapper
-  KPIS_SPREADSHEET_2020 = '1fhDJ871z0vpNK-UvzRfnxXD5SEvXc2yaSTMjgyLrbf8'.freeze
-  KPIS_SPREADSHEET_2019 = '1uLUrGDuyNHr45PlCg19OEq551zGLQZo3SU73WToZMTA'.freeze
 
   def after_init(args = {})
   end
 
   def call
     result = sheets_service.batch_get_spreadsheet_values(
-      KPIS_SPREADSHEET_2020,
+      ExportData::ToGoogleSheets::KPIS_SPREADSHEET_2020,
       ranges: ranges,
       major_dimension: 'ROWS',
     )
     values = result.value_ranges.first.values.map(&:first).map do |value|
       value.scan(/(\d|[.-])/).join.try(:to_f)
     end
-    DailyForecast.create(
+    daily_forecast = DailyForecast.find_or_initialize_by(date: Date.today)
+    daily_forecast.attributes = {
       date: Date.today,
       months: {
         "1": values[0],
@@ -29,9 +28,10 @@ class PullBudgetAmounts
         "9": values[8],
         "10": values[9],
         "11": values[10],
-        "12": values[12],
+        "12": values[11],
       }
-    )
+    }
+    daily_forecast.save
   end
   
   def ranges
