@@ -31,7 +31,7 @@ class TimeEntry < ActiveRecord::Base
 
   def cost
     return 0.00 unless rounded_hours && cost_rate
-    rounded_hours * cost_rate
+    (rounded_hours * cost_rate).round(2)
   end
 
   def maintenance?

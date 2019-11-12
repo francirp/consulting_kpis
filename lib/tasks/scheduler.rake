@@ -44,3 +44,9 @@ task :refresh_events => :environment do
 
   puts "done."
 end
+
+task :pull_budget_amounts => :environment do
+  puts "pulling monthly budget amounts and storing in database"
+  PullBudgetAmounts.new.call
+  puts "done."
+end
