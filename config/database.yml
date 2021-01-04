@@ -5,6 +5,8 @@ development:
   database: consulting_kpis_dev
   pool: 5
   host: localhost
+  user: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
 
 test:
   adapter: postgresql
@@ -12,3 +14,5 @@ test:
   database: consulting_kpis_test
   pool: 5
   host: localhost
+  user: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
