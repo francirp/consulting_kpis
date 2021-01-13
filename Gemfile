@@ -19,7 +19,7 @@ gem 'draper'
 gem 'decanter'
 gem 'google_drive'
 # gem 'delayed_job_active_record'
-gem 'rails_12factor', group: :production
+# gem 'rails_12factor', group: :production
 gem 'google-api-client'
 gem 'httparty'
 gem 'nokogiri'
