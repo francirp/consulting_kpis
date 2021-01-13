@@ -19,7 +19,6 @@ gem 'draper'
 gem 'decanter'
 gem 'google_drive'
 # gem 'delayed_job_active_record'
-# gem 'rails_12factor', group: :production
 gem 'google-api-client'
 gem 'httparty'
 gem 'nokogiri'
@@ -27,7 +26,6 @@ gem "sprockets", "<4"
 
 group :development do
   gem 'web-console'
-  gem 'spring'
   gem 'better_errors'
   gem 'binding_of_caller'
   # gem 'quiet_assets'
