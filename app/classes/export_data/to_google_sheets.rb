@@ -1,7 +1,7 @@
 class ExportData::ToGoogleSheets
   include ExportData::GoogleSheetsWrapper
-  KPIS_SPREADSHEET = '1uLUrGDuyNHr45PlCg19OEq551zGLQZo3SU73WToZMTA'.freeze
-  KPIS_SPREADSHEET_2020 = '1fhDJ871z0vpNK-UvzRfnxXD5SEvXc2yaSTMjgyLrbf8'.freeze
+  # KPIS_SPREADSHEET = Rails.env['KPIS_SPREADSHEET']
+  KPIS_SPREADSHEET = '1B7460p11D3ebu8t1FtxEg6ynhxDjcUNA9903lODYO3A'.freeze
   EVENTS_SPREADSHEET = '16iENqAuXt1S5Z62c0km00PKgISPsbMHEkBWy0M8aWdQ'.freeze
 
   def after_init(args)

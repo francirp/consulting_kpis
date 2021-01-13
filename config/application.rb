@@ -1,6 +1,6 @@
-require File.expand_path('../boot', __FILE__)
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -8,35 +8,33 @@ Bundler.require(*Rails.groups)
 
 module ConsultingKpis
   class Application < Rails::Application
-
-      config.generators do |g|
-        g.test_framework :rspec,
-          fixtures: true,
-          view_specs: false,
-          helper_specs: false,
-          routing_specs: false,
-          controller_specs: true,
-          request_specs: false
-        g.fixture_replacement :factory_girl, dir: "spec/factories"
-      end
-
-    config.before_initialize do |app|
-      app.config.paths.add 'app/classes', :eager_load => true
+    config.load_defaults 5.0
+    
+    config.generators do |g|
+      g.test_framework :rspec,
+        fixtures: true,
+        view_specs: false,
+        helper_specs: false,
+        routing_specs: false,
+        controller_specs: true,
+        request_specs: false
+      g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.default_url_options = { :host => ENV['APPLICATION_ROOT_URL'] }
+    config.action_mailer.perform_deliveries = true
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
+    config.action_mailer.smtp_settings = {
+      address: "smtp.mandrillapp.com",
+      port: 587,
+      domain: ENV['APPLICATION_ROOT_URL'],
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: ENV['EMAIL'],
+      password: ENV['EMAIL_PASSWORD']
+    }
 
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
+    # config.eager_load_paths << Rails.root.join("extras")
   end
 end

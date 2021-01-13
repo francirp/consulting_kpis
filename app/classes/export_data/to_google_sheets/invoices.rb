@@ -19,6 +19,7 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
     'Client Address',
     'Year',
     'Month',
+    'Retainer?',
   ]
 
   private
@@ -56,6 +57,7 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
         '',
         year,
         month,
+        invoice.retainer_id.present? ? 'Yes' : 'No',
       ]
     end
   end
@@ -66,7 +68,7 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
   end
 
   def spreadsheet_id
-    KPIS_SPREADSHEET_2020
+    KPIS_SPREADSHEET
   end
 
   def pull_invoices

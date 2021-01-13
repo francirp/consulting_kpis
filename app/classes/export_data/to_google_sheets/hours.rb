@@ -35,6 +35,6 @@ class ExportData::ToGoogleSheets::Hours < ExportData::ToGoogleSheets
   end
 
   def spreadsheet_id
-    KPIS_SPREADSHEET_2020
+    KPIS_SPREADSHEET
   end
 end
