@@ -1,4 +1,4 @@
-class CreateTimeEntries < ActiveRecord::Migration
+class CreateTimeEntries < ActiveRecord::Migration[6.1]
   def change
     create_table :time_entries do |t|
       t.date :spent_at

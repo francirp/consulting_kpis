@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
   has_many :time_entries
-  belongs_to :client
+  belongs_to :client, optional: true
 
   include Harvest::Calculations
 
