@@ -6,7 +6,7 @@ class PullBudgetAmounts
 
   def call
     result = sheets_service.batch_get_spreadsheet_values(
-      ExportData::ToGoogleSheets::KPIS_SPREADSHEET_2020,
+      ExportData::ToGoogleSheets::KPIS_SPREADSHEET,
       ranges: ranges,
       major_dimension: 'ROWS',
     )
