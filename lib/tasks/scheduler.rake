@@ -16,9 +16,6 @@ task :refresh_harvest_data => :environment do
   invoice_updater = ExportData::ToGoogleSheets::Invoices.new
   invoice_updater.update
 
-  events_updater = ExportData::ToGoogleSheets::Events.new
-  events_updater.update
-
   puts "done."
 end
 
