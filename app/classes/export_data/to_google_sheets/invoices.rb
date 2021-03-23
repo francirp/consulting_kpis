@@ -7,7 +7,7 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
     'Client',
     'Subject',
     'Invoice Amount',
-    'Paid Amount',
+    'Due Amount',
     'Balance',
     'Subtotal',
     'Discount',
