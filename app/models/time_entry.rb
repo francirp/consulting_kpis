@@ -76,8 +76,6 @@ class TimeEntry < ActiveRecord::Base
         time_entry.maintenance?,
         time_entry.streamlined_checkout?,
         time_entry.billable_rate,
-        time_entry.cost_rate,
-        time_entry.cost,
       ]
       row
     end.compact
