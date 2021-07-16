@@ -1,19 +1,20 @@
 desc "This task is called by the Heroku scheduler add-on"
 task :refresh_harvest_data => :environment do
-  # run your code here
-  h = Harvest::Pull.new
   puts "pulling clients"
-  h.pull_clients
+  HarvestSync::PullClients.new.call
   puts "pulling projects"
-  h.pull_projects
-  puts "assigning clients to projects"
-  h.assign_clients_to_projects
+  HarvestSync::PullProjects.new.call
+  puts "pulling invoices"
+  HarvestSync::PullInvoices.new.call
+  puts "pulling time entries"
+  HarvestSync::PullTimeEntries.new.call
   puts "exporting data to google sheets"
 
   hours_updater = ExportData::ToGoogleSheets::Hours.new
   hours_updater.update
 
-  invoice_updater = ExportData::ToGoogleSheets::Invoices.new
+  # TODO: leverage DB instead of Harvest API when pushing invoices to Google Sheets
+  invoice_updater = ExportData::ToGoogleSheets::Invoices.new 
   invoice_updater.update
 
   puts "done."

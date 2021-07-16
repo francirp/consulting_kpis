@@ -1,6 +1,7 @@
-class TimeEntry < ActiveRecord::Base
-  include Harvest::Calculations
+class TimeEntry < ApplicationRecord
   belongs_to :project
+  belongs_to :team_member, optional: true
+  belongs_to :client, optional: true
 
   scope :earliest, -> { order("spent_at ASC") }
   scope :latest, -> { order("spent_at DESC") }
@@ -19,16 +20,6 @@ class TimeEntry < ActiveRecord::Base
     spent_at.year
   end
 
-  def self.rounded_hours(time_entries)
-    return 0.00 unless time_entries.any?
-    hours = time_entries.is_a?(Array) ? time_entries.map(&:hours) : time_entries.pluck(:hours)
-    hours.map { |hour| Harvest::Calculations.roundup(hour) }.sum
-  end
-
-  def rounded_hours
-    Harvest::Calculations.roundup(hours)
-  end
-
   def cost
     return 0.00 unless rounded_hours && cost_rate
     (rounded_hours * cost_rate).round(2)
@@ -43,7 +34,7 @@ class TimeEntry < ActiveRecord::Base
   end
 
   def self.rows
-    users = Harvest::Wrapper.new.users
+    users = HarvestedWrapper.new.users
     projects_by_id = Project.all.group_by(&:id)
     clients_by_id = Client.all.group_by(&:id)
     time_entries = self.current_year.earliest.includes(:project).map.with_index do |time_entry, index|

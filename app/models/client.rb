@@ -1,3 +1,3 @@
-class Client < ActiveRecord::Base
+class Client < ApplicationRecord
   has_many :projects
 end

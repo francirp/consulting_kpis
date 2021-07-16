@@ -26,7 +26,7 @@ class ExportData::ToCsv
     client = project.client
     project.entries_by_year_and_week.each do |year, weeks|
       weeks.each do |week, entries|
-        rounded_hours = TimeEntry.rounded_hours(entries)
+        rounded_hours = entries.sum(:rounded_hours).try(:round, 2)
         billable_amount = (project.hourly_rate || 0.00) * (project.rounded_hours || 0.00)
         @csv << [client.name, project.name, year, entries.first.spent_at.month, week, rounded_hours, project.hourly_rate]
       end

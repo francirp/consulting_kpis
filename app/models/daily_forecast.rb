@@ -1,4 +1,4 @@
-class DailyForecast < ActiveRecord::Base
+class DailyForecast < ApplicationRecord
   scope :earliest, -> { order("date ASC") }
   def self.rows
     earliest.map do |forecast|

@@ -72,7 +72,7 @@ class ExportData::ToGoogleSheets::Invoices < ExportData::ToGoogleSheets
   end
 
   def pull_invoices
-    harvest = Harvest::Wrapper.new.harvest
+    harvest = HarvestedWrapper.new.harvest
     page = 1
     invoices = []
     more_pages_left = true

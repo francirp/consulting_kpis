@@ -1,6 +1,4 @@
-class Harvest::Wrapper
-  include Harvest::Calculations
-
+class HarvestedWrapper
   attr_reader :harvest
 
   def initialize(args = {})

@@ -10,5 +10,7 @@ class CreateTeamMembers < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_column :time_entries, :team_member_id, :bigint, foreign_key: true
   end
 end

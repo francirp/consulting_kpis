@@ -11,6 +11,7 @@ gem 'turbolinks'
 gem 'jbuilder'
 gem 'sdoc', group: :doc
 gem 'harvested'
+gem 'harvesting' # harvested is deprecated, moving away from it in favor of this wrapper
 gem 'pg'
 gem 'devise'
 gem 'figaro'
@@ -34,7 +35,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'faker'
   # gem 'pry-nav'
   gem 'pry-rails'

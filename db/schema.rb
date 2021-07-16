@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_13_043345) do
+ActiveRecord::Schema.define(version: 2021_07_16_132036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,21 @@ ActiveRecord::Schema.define(version: 2021_01_13_043345) do
     t.text "details"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["harvest_id"], name: "index_clients_on_harvest_id", unique: true
+  end
+
+  create_table "contracts", force: :cascade do |t|
+    t.boolean "is_hourly"
+    t.float "hourly_rate"
+    t.float "salary"
+    t.float "bonus"
+    t.float "total_comp"
+    t.date "start_date"
+    t.date "end_date"
+    t.bigint "team_member_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_member_id"], name: "index_contracts_on_team_member_id"
   end
 
   create_table "daily_forecasts", force: :cascade do |t|
@@ -77,6 +92,23 @@ ActiveRecord::Schema.define(version: 2021_01_13_043345) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "invoices", force: :cascade do |t|
+    t.date "issue_date"
+    t.integer "harvest_id"
+    t.bigint "client_id", null: false
+    t.float "amount"
+    t.date "period_start"
+    t.date "period_end"
+    t.string "state"
+    t.string "payment_term"
+    t.date "sent_at"
+    t.date "paid_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["client_id"], name: "index_invoices_on_client_id"
+    t.index ["harvest_id"], name: "index_invoices_on_harvest_id", unique: true
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "name"
     t.integer "harvest_id"
@@ -88,6 +120,18 @@ ActiveRecord::Schema.define(version: 2021_01_13_043345) do
     t.bigint "client_id"
     t.float "revenue"
     t.index ["client_id"], name: "index_projects_on_client_id"
+    t.index ["harvest_id"], name: "index_projects_on_harvest_id", unique: true
+  end
+
+  create_table "team_members", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "harvest_id"
+    t.boolean "is_contractor"
+    t.string "email"
+    t.boolean "is_active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "time_entries", force: :cascade do |t|
@@ -108,6 +152,11 @@ ActiveRecord::Schema.define(version: 2021_01_13_043345) do
     t.boolean "billable"
     t.float "billable_rate"
     t.float "cost_rate"
+    t.bigint "team_member_id"
+    t.float "rounded_hours"
+    t.integer "harvest_client_id"
+    t.bigint "client_id"
+    t.index ["harvest_id"], name: "index_time_entries_on_harvest_id", unique: true
     t.index ["project_id"], name: "index_time_entries_on_project_id"
   end
 
@@ -128,8 +177,21 @@ ActiveRecord::Schema.define(version: 2021_01_13_043345) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "utilization_goals", force: :cascade do |t|
+    t.bigint "team_member_id", null: false
+    t.integer "annualized_hours"
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_member_id"], name: "index_utilization_goals_on_team_member_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "contracts", "team_members"
+  add_foreign_key "invoices", "clients"
   add_foreign_key "projects", "clients"
   add_foreign_key "time_entries", "projects"
+  add_foreign_key "utilization_goals", "team_members"
 end

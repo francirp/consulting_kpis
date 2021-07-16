@@ -4,7 +4,7 @@ class TimeEntryFilter
   def initialize(args = {})
     @start_date = args.fetch(:start_date, Date.today.beginning_of_week)
     @end_date = args.fetch(:end_date, Date.today)
-    @harvest_wrapper = Harvest::Wrapper.new
+    @harvest_wrapper = HarvestedWrapper.new
   end
 
 
@@ -27,24 +27,12 @@ class TimeEntryFilter
     @users ||= harvest_wrapper.users.find_all(&:is_active?)
   end
 
-  # def billable_hours_by_team_member
-  #   hours = active_users.map do |user|
-  #     entries = harvest.reports.time_by_user(user, start_date, end_date, billable: true)
-  #     hash = {
-  #       name: "#{user['first_name']} #{user['last_name']}",
-  #       hours: TimeEntry.rounded_hours(entries)
-  #     }
-  #     hash
-  #   end
-  #   hours
-  # end
-
   def hours_by_team_member
     hours = active_users.map do |user|
       billable_entries = harvest.reports.time_by_user(user, start_date, end_date, billable: true)
       nonbillable_entries = harvest.reports.time_by_user(user, start_date, end_date, billable: false)
-      billable_hours = TimeEntry.rounded_hours(billable_entries)
-      nonbillable_hours = TimeEntry.rounded_hours(nonbillable_entries)
+      billable_hours = billable_entries.sum(:rounded_hours).try(:round, 2)
+      nonbillable_hours = nonbillable_entries.sum(:rounded_hours).try(:round, 2)
       hash = {
         name: "#{user['first_name']} #{user['last_name']}",
         billable_hours: billable_hours,

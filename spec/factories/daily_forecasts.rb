@@ -1,6 +1,6 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :daily_forecast do
-    months ""
+    months {""}
   end
 
 end

@@ -1,11 +1,9 @@
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
   has_many :time_entries
   belongs_to :client, optional: true
 
-  include Harvest::Calculations
-
   def rounded_hours
-    TimeEntry.rounded_hours(time_entries)
+    time_entries.sum(:rounded_hours).round(2)
   end
 
   def profit
