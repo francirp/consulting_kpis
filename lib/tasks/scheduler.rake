@@ -1,5 +1,7 @@
 desc "This task is called by the Heroku scheduler add-on"
 task :refresh_harvest_data => :environment do
+  puts "pulling users"
+  HarvestSync::CreateTeamMembers.new.call  
   puts "pulling clients"
   HarvestSync::PullClients.new.call
   puts "pulling projects"
@@ -9,6 +11,10 @@ task :refresh_harvest_data => :environment do
   puts "pulling time entries"
   HarvestSync::PullTimeEntries.new.call
   puts "exporting data to google sheets"
+
+  TeamMember.all.each do |team_member|
+    team_member.set_start_and_end_date
+  end
 
   hours_updater = ExportData::ToGoogleSheets::Hours.new
   hours_updater.update

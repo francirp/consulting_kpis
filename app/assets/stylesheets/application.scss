@@ -1,2 +1,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import 'bootstrap-datepicker3';
+
+.filters {
+  padding-top: 10px;
+  margin-left: 50px;
+}
+
+.red {
+  color: red;
+}

@@ -1,0 +1,23 @@
+
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Total Invoiced</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @clients.each do |client| %>
+      <% invoices = @invoices[client.id] %>
+      <% next unless invoices.present? %>   
+      <tr>
+        <td><%= client.name %></td>
+        <td><%= number_to_currency(invoices.sum(&:amount), precision: 0) %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td><strong>Total</strong></td>
+      <td><strong><%= number_to_currency(@invoices.values.flatten.sum(&:amount), precision: 0) %><strong></td>
+    </tr>
+  </tbody>
+</table>

@@ -5,7 +5,7 @@ class TimeEntry < ApplicationRecord
 
   scope :earliest, -> { order("spent_at ASC") }
   scope :latest, -> { order("spent_at DESC") }
-  scope :billable, -> { order("spent_at DESC") }
+  scope :billable, -> { where(billable: true) }
 
   scope :between, ->(start_date, end_date) { where('spent_at >= ? AND spent_at <= ?', start_date, end_date) }
   scope :current_year, ->{ where('spent_at >= ? AND spent_at <= ?', Date.today.beginning_of_year, Date.today.end_of_year) }

@@ -43,6 +43,7 @@ module HarvestSync
         payment_term: invoice["payment_term"],
         created_at: invoice["created_at"],
         updated_at: invoice["updated_at"],
+        is_retainer: invoice.dig('retainer', 'id').present?,
       }
     end    
   end

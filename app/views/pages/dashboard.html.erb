@@ -1,3 +1,47 @@
 <div class="row">
+  <h1>Dashboard</h1>
+</div>
 
+<div class="row">
+  <h2>Gross Profit Performance</h2>
+  <ul>
+    <li> Total Hours Billed: <%= number(@key_metrics.hours_billed) %> </li>
+    <li> Total Revenue: <%= number_to_currency(@key_metrics.revenue, precision: 0) %></li>
+    <li> Total Effective Rate: <%= number_to_currency(@key_metrics.effective_rate, precision: 0) %></li>
+    <li> Total Utilization: <%= number_to_percentage(@key_metrics_no_contractors.utilization * 100, precision: 0) %></li>
+    <li> Total Hours Billed w/o Contractors: <%= number(@key_metrics_no_contractors.hours_billed) %></li>
+  </ul>
+</div>
+
+<div class="row">
+  <h2>Utilization by Team Member</h2>
+
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Team Member</th>
+        <th>Available Hours</th>
+        <th>Actual Hours</th>
+        <th>Utilization %</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @key_metrics.hours_by_employee.each do |hash| %> 
+        <tr>
+          <td><%= hash[:employee].name %></td>
+          <td><%= number_with_precision(hash[:available_hours], precision: 0) %></td>
+          <td><%= number_with_precision(hash[:hours_billed], precision: 0) %></td>
+          <td class="<%= 'red' if hash[:variance] < 0 %>"><%= number_with_precision(hash[:variance], precision: 0) %></td>
+          <td><%= number_to_percentage(hash[:utilization], precision: 0) %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td><%= number(@key_metrics_no_contractors.available_hours_of_employees) %></td>
+        <td><%= number(@key_metrics_no_contractors.hours_billed) %></td>
+        <td><%= number(@key_metrics_no_contractors.hours_variance) %></td>
+        <td><%= number_to_percentage(@key_metrics_no_contractors.utilization * 100, precision: 0) %></td>
+      </tr>
+    </tbody>
+  </table>
 </div>

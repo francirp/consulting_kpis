@@ -7,6 +7,7 @@ module HarvestSync
     end
 
     def call
+      clients = Client.all.group_by(&:harvest_id)
       array = []
       harvesting_client.projects.each do |project|
         hash = {
@@ -18,6 +19,9 @@ module HarvestSync
           created_at: Time.now,
           updated_at: Time.now,
         }
+        hash.merge!(
+          client_id: clients[project.client.id].first.id,
+        )
         array << hash
       end
       Project.upsert_all(array, unique_by: :harvest_id)

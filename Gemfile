@@ -24,6 +24,8 @@ gem 'google-api-client'
 gem 'httparty'
 gem 'nokogiri'
 gem "sprockets", "<4"
+gem 'activeadmin'
+gem 'bootstrap-datepicker-rails'
 
 group :development do
   gem 'web-console'
