@@ -27,8 +27,6 @@ class TeamMember < ApplicationRecord
     [first_name, last_name].compact.join(' ')
   end
 
-  private
-  
   def set_start_and_end_date
     entries = time_entries.order("spent_at ASC")
     self.start_date = entries.first.try(:spent_at)
