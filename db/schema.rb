@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_17_031341) do
+ActiveRecord::Schema.define(version: 2021_07_19_112611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 2021_07_17_031341) do
     t.bigint "team_member_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "target_billable_hours_per_year"
     t.index ["team_member_id"], name: "index_contracts_on_team_member_id"
   end
 
@@ -161,6 +162,7 @@ ActiveRecord::Schema.define(version: 2021_07_17_031341) do
     t.datetime "updated_at", precision: 6, null: false
     t.date "start_date"
     t.date "end_date"
+    t.float "billable_target_ratio"
   end
 
   create_table "time_entries", force: :cascade do |t|
@@ -206,21 +208,10 @@ ActiveRecord::Schema.define(version: 2021_07_17_031341) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "utilization_goals", force: :cascade do |t|
-    t.bigint "team_member_id", null: false
-    t.integer "annualized_hours"
-    t.date "start_date"
-    t.date "end_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["team_member_id"], name: "index_utilization_goals_on_team_member_id"
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contracts", "team_members"
   add_foreign_key "invoices", "clients"
   add_foreign_key "projects", "clients"
   add_foreign_key "time_entries", "projects"
-  add_foreign_key "utilization_goals", "team_members"
 end
