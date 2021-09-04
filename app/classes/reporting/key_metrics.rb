@@ -24,15 +24,13 @@ module Reporting
 
     def hours_by_employee
       array = employees.map do |employee|
-        hash = {}
-        hash[:employee] = employee
-        hash[:available_hours] = employee.available_hours(start_date, end_date)
-        hash[:hours_billed] = employee.hours_billed(start_date, end_date)
-        hash[:variance] = hash[:hours_billed] - hash[:available_hours]
-        hash[:utilization] = (hash[:hours_billed] / hash[:available_hours]) * 100
-        hash
+        MetricsForTeamMember.new(
+          employee,
+          timeframe_start_date: start_date,
+          timeframe_end_date: end_date,
+        )
       end
-      array.sort_by { |hash| hash[:variance] }
+      array.sort_by { |metrics| metrics.variance_to_target_hours }
     end
 
     def utilization
@@ -40,8 +38,8 @@ module Reporting
     end
 
     def available_hours_of_employees
-      hours_by_employee.sum do |employee_hash|
-        employee_hash[:available_hours]
+      hours_by_employee.sum do |employee_metrics|
+        employee_metrics.available_hours
       end
     end
     

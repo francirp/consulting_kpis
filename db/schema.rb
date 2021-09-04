@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_19_112611) do
+ActiveRecord::Schema.define(version: 2021_09_03_211834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,19 @@ ActiveRecord::Schema.define(version: 2021_07_19_112611) do
     t.index ["harvest_id"], name: "index_clients_on_harvest_id", unique: true
   end
 
+  create_table "contacts", force: :cascade do |t|
+    t.integer "harvest_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.boolean "send_surveys"
+    t.bigint "client_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["client_id"], name: "index_contacts_on_client_id"
+    t.index ["harvest_id"], name: "index_contacts_on_harvest_id", unique: true
+  end
+
   create_table "contracts", force: :cascade do |t|
     t.boolean "is_hourly"
     t.float "hourly_rate"
@@ -148,7 +161,6 @@ ActiveRecord::Schema.define(version: 2021_07_19_112611) do
     t.bigint "client_id"
     t.float "revenue"
     t.index ["client_id"], name: "index_projects_on_client_id"
-    t.index ["harvest_id"], name: "index_projects_on_harvest_id", unique: true
   end
 
   create_table "team_members", force: :cascade do |t|
@@ -210,6 +222,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_112611) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "contacts", "clients"
   add_foreign_key "contracts", "team_members"
   add_foreign_key "invoices", "clients"
   add_foreign_key "projects", "clients"
