@@ -1,0 +1,7 @@
+{
+  "name": "consulting_kpis",
+  "private": true,
+  "dependencies": {
+    "mjml": "^4.10.2"
+  }
+}

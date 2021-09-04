@@ -26,6 +26,7 @@ gem 'nokogiri'
 gem "sprockets", "<4"
 gem 'activeadmin'
 gem 'bootstrap-datepicker-rails'
+gem 'mjml-rails'
 
 group :development do
   gem 'web-console'

@@ -18,7 +18,7 @@ module ConsultingKpis
         routing_specs: false,
         controller_specs: true,
         request_specs: false
-      g.fixture_replacement :factory_girl, dir: "spec/factories"
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
     end
 
     config.action_mailer.delivery_method = :smtp
@@ -26,15 +26,14 @@ module ConsultingKpis
     config.action_mailer.perform_deliveries = true
 
     config.action_mailer.smtp_settings = {
-      address: "smtp.mandrillapp.com",
+      address: ENV['SMTP_ADDRESS'],
       port: 587,
       domain: ENV['APPLICATION_ROOT_URL'],
-      authentication: "plain",
+      authentication: 'plain',
       enable_starttls_auto: true,
-      user_name: ENV['EMAIL'],
-      password: ENV['EMAIL_PASSWORD']
+      user_name: ENV['SMTP_USERNAME'],
+      password: ENV['SMTP_PASSWORD']
     }
-
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

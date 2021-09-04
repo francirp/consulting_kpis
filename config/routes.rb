@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   root to: 'pages#dashboard', as: "dashboard"
   resources :projects
   resources :clients
+  resources :feedback_requests, only: [:show, :update] do
+    get :success, on: :collection
+  end
 
   post '/update-report' => 'pages#update_report', as: :update_report
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_03_211834) do
+ActiveRecord::Schema.define(version: 2021_09_04_015414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_211834) do
     t.bigint "client_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "last_feedback_request_date"
     t.index ["client_id"], name: "index_contacts_on_client_id"
     t.index ["harvest_id"], name: "index_contacts_on_harvest_id", unique: true
   end
@@ -132,6 +133,24 @@ ActiveRecord::Schema.define(version: 2021_09_03_211834) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "feedback_requests", force: :cascade do |t|
+    t.bigint "contact_id", null: false
+    t.date "date"
+    t.integer "rating"
+    t.text "comment"
+    t.boolean "communication"
+    t.boolean "management"
+    t.boolean "team"
+    t.boolean "results"
+    t.boolean "timeline"
+    t.boolean "other"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "token"
+    t.index ["contact_id"], name: "index_feedback_requests_on_contact_id"
+    t.index ["token"], name: "index_feedback_requests_on_token", unique: true
+  end
+
   create_table "invoices", force: :cascade do |t|
     t.date "issue_date"
     t.integer "harvest_id"
@@ -161,6 +180,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_211834) do
     t.bigint "client_id"
     t.float "revenue"
     t.index ["client_id"], name: "index_projects_on_client_id"
+    t.index ["harvest_id"], name: "index_projects_on_harvest_id", unique: true
   end
 
   create_table "team_members", force: :cascade do |t|
@@ -224,6 +244,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_211834) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contacts", "clients"
   add_foreign_key "contracts", "team_members"
+  add_foreign_key "feedback_requests", "contacts"
   add_foreign_key "invoices", "clients"
   add_foreign_key "projects", "clients"
   add_foreign_key "time_entries", "projects"

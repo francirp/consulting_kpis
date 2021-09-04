@@ -55,3 +55,10 @@ task :pull_budget_amounts => :environment do
   ExportData::ToGoogleSheets::DailyForecasts.new.update
   puts "done."
 end
+
+task :send_feedback_requests => :environment do
+  puts "sending feedback requests"
+  Contact.all_ready_for_feedback_request.each do |contact|
+    contact.send_feedback_request
+  end
+end

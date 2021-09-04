@@ -1,0 +1,97 @@
+<!-- views/layouts/default.mjml -->
+<mjml>
+  <mj-head>
+    <mj-title>LaunchPad Lab Monthly Happiness Survey</mj-title>
+    <mj-preview>Let us know how we're doing by responding to our monthly survey</mj-preview>
+
+    <mj-font name="Lato" href="https://fonts.googleapis.com/css?family=Lato:300,400,500,700" />
+
+    <mj-style inline="inline">
+      body,
+      p,
+      ul li,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        font-family: 'Lato', 'Arial', 'sans-serif';
+      }
+
+      h1 {
+        color: #555;
+        font-weight: 500;
+        font-size: 25px;
+        margin-top: 0;
+      }
+
+      p,
+      ul li,
+      span {
+        font-size: 16px;
+      }
+
+      .survey-options {
+        padding: 0;
+        margin: 40px 0 40px;
+        list-style: none;
+      }
+
+      .survey-options a {
+        color: #1E60BD;
+        display: inline-block;
+        margin-bottom: 10px;
+        text-align: center;
+        text-decoration: none;
+        width: 100px;
+      }
+
+      .survey-options img {
+        max-width: 100%;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      .survey-options a span {
+        display: block;
+        font-size: 14px;
+      }
+
+      .anon {
+        color: #999999;
+        font-size: 14px;
+        line-height: 1.3;
+        margin-top: 40px;
+        padding: 0 15px;
+      }
+
+      .footer small {
+        font-family: 'Lato', 'Arial', 'sans-serif';
+        font-size: 14px;
+        color: #BBBBBB;
+        display: block;
+        text-align: center;
+      }
+    </mj-style>
+  </mj-head>
+
+  <mj-body background-color="#F5F5F5" width="600px">>
+    <mj-section>
+      <mj-column>
+        <mj-image width="220px" src="<%= image_url('lpl-logo.png') %>"></mj-image>
+      </mj-column>
+    </mj-section>
+
+    <mj-wrapper background-color="#ffffff" border="1px solid #E6E6E6">
+      <%= yield %>
+    </mj-wrapper>
+
+    <mj-section css-class="footer">
+      <mj-column>
+        <mj-text>
+          <small>&copy; LaunchPad Lab <%= Time.current.year %>. All Rights Reserved.</small>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

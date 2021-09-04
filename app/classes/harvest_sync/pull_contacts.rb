@@ -2,8 +2,7 @@ module HarvestSync
   class PullContacts
     attr_reader :harvest_wrapper
 
-    def intialize(args = {})
-    end
+    def intialize;end
 
     def call
       clients = Client.all.group_by(&:harvest_id)
