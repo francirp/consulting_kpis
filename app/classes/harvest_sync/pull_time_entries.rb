@@ -1,11 +1,10 @@
 module HarvestSync
   class PullTimeEntries
-    attr_reader :start_date, :end_date, :harvest_wrapper
+    attr_reader :start_date, :end_date
 
     def initialize(args = {})
       @start_date = args.fetch(:start_date, Date.today - 1.week)
       @end_date = args.fetch(:end_date, Date.today.end_of_year)
-      @harvest_wrapper = HarvestedWrapper.new
     end
 
     def call

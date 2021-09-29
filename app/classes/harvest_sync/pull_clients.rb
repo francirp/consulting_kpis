@@ -1,10 +1,6 @@
 module HarvestSync
   class PullClients
-    attr_reader :harvest_wrapper
-
-    def intialize
-      @harvest_wrapper = HarvestedWrapper.new
-    end
+    def intialize;end
 
     def call
       array = []

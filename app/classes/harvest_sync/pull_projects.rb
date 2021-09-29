@@ -1,10 +1,6 @@
 module HarvestSync
   class PullProjects
-    attr_reader :harvest_wrapper
-
-    def intialize(args = {})
-      @harvest_wrapper = HarvestedWrapper.new
-    end
+    def intialize;end
 
     def call
       clients = Client.all.group_by(&:harvest_id)
