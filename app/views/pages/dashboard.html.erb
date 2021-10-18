@@ -72,7 +72,10 @@
         <tr>
           <td><%= employee_metrics.employee.name %></td>
           <td><%= number_with_precision(employee_metrics.hours_billed, precision: 0) %></td>
-          <td><%= number_with_precision(employee_metrics.target_hours, precision: 0) %></td>
+          <td>
+            <%= number_with_precision(employee_metrics.target_hours, precision: 0) %> 
+              <i class="allocation-percent">(<%= number_to_percentage(employee_metrics.employee.billable_target_ratio * 100, precision: 0) %> billable)</i>
+            </td>
           <td class="<%= 'red' if employee_metrics.variance < 0 %>"><%= number_with_precision(employee_metrics.variance, precision: 0) %></td>
         </tr>
       <% end %>
