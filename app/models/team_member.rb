@@ -7,6 +7,8 @@ class TeamMember < ApplicationRecord
   scope :inactive, -> { where.not(is_active: true) }
   has_many :time_entries
 
+  before_save :set_end_date, unless: :is_active?
+
   def billable_target_ratio
     attributes['billable_target_ratio'] || 1.0
   end
@@ -20,9 +22,13 @@ class TeamMember < ApplicationRecord
   end
 
   def set_start_and_end_date
-    entries = time_entries.order("spent_at ASC")
+    entries = time_entries.earliest
     self.start_date = entries.first.try(:spent_at)
     self.end_date = is_active? ? nil : entries.last.try(:spent_at) 
     self.save
+  end
+
+  def set_end_date
+    self.end_date = time_entries.latest.first.try(:spent_at)
   end
 end
