@@ -19,12 +19,13 @@ module HarvestSync
         response = HarvestApi::GetTimeEntries.new(start_date, end_date, page: page).call
         array = response['time_entries'].map do |entry|
           hash = transform_time_entry(entry)
+          next if timer_still_running?(entry)
           hash.merge(
             client_id: clients[entry.dig('client', 'id')].first.id,
             project_id: projects[entry.dig('project', 'id')].first.id,
             team_member_id: team_members[entry.dig('user', 'id')].first.id,
           )
-        end
+        end.compact # compact to remove the nils from running timers
         TimeEntry.upsert_all(array, unique_by: :harvest_id)
         keep_fetching = response['total_pages'] > page && response['total_pages']
         page += 1
@@ -54,6 +55,10 @@ module HarvestSync
         is_billed: entry["is_billed"],
         harvest_invoice_id: entry.dig('invoice', 'id'),
       }
+    end
+
+    def timer_still_running?(entry)
+      entry['is_running']
     end
   end
 end

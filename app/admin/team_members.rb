@@ -6,5 +6,7 @@ ActiveAdmin.register TeamMember do
   scope :inactive
   scope :all
 
+  remove_filter :time_entries
+
   config.sort_order = 'first_name_asc'
 end

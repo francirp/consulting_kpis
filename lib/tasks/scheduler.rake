@@ -55,3 +55,4 @@ task :pull_budget_amounts => :environment do
   ExportData::ToGoogleSheets::DailyForecasts.new.update
   puts "done."
 end
+
