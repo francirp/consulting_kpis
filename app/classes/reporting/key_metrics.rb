@@ -23,9 +23,11 @@ module Reporting
 
     def hours_by_employee
       array = employees.map do |employee|
+        employee_time_entries = time_entries.find_all { |t| t.team_member_id == employee.id }
         EmployeeKeyMetrics.new(
           filter,
           employee,
+          time_entries: employee_time_entries,
         )
       end
       array.reject! { |e| e.not_active? }

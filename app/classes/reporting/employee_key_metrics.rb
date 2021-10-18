@@ -3,12 +3,13 @@ module Reporting
     AVAILABLE_HOURS_PER_PERSON = 1572.0
     BASELINE_TARGET_HOURS_PER_PERSON = 1300.0
 
-    attr_reader :filter, :employee
+    attr_reader :filter, :employee, :employee_time_entries
     delegate :time_entries, :start_date, :end_date, to: :filter
 
-    def initialize(filter, employee)
+    def initialize(filter, employee, opts = {})
       @filter = filter
       @employee = employee
+      @employee_time_entries = opts[:time_entries]
     end
 
     def available_hours
@@ -55,7 +56,7 @@ module Reporting
     private
 
     def employee_time_entries
-      time_entries.where(team_member_id: employee.id)
+      @employee_time_entries ||= time_entries.where(team_member_id: employee.id)
     end    
   end
 end
