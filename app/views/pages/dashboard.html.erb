@@ -78,10 +78,9 @@
       <% end %>
       <tr>
         <td><strong>Total</strong></td>
-        <td><%= number(@key_metrics_no_contractors.target_hours_of_employees) %></td>
         <td><%= number(@key_metrics_no_contractors.hours_billed) %></td>
+        <td><%= number(@key_metrics_no_contractors.target_hours_of_employees) %></td>
         <td><%= number(@key_metrics_no_contractors.hours_variance) %></td>
-        <td><%= number_to_percentage(@key_metrics_no_contractors.utilization * 100, precision: 0) %></td>
       </tr>
     </tbody>
   </table>
