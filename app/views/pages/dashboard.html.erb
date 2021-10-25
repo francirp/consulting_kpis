@@ -7,9 +7,10 @@
   <ul>
     <li>Total Hours Billed: <%= number(@key_metrics.hours_billed) %> </li>
     <li>Employee Hours Billed: <%= number(@key_metrics_no_contractors.hours_billed) %> </li>
-    <li>Target Employee Hours:  </li>
+    <li>Target Employee Hours: <%= number(@key_metrics_no_contractors.target_hours_of_employees) %></li>
+    <li>Hours Miss in Revenue: <%= number_to_currency(@key_metrics_no_contractors.miss_in_revenue_from_hours_miss, precision: 0) %></li>
     <li>Total Revenue: <%= number_to_currency(@key_metrics.revenue, precision: 0) %></li>
-    <li>Total Effective Rate: </li>
+    <li>Total Effective Rate: <%= number_to_currency(@key_metrics.effective_rate, precision: 0) %></li>
     <li>Utilization: <%= number_to_percentage(@key_metrics_no_contractors.net_utilization * 100, precision: 0) %></li>
   </ul>
 

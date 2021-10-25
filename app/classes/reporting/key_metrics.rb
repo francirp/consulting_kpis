@@ -1,6 +1,7 @@
 module Reporting
   class KeyMetrics
     POTENTIAL_HOURS_PER_YEAR_PER_PERSON = 1572
+    ER_TARGET = 160.0
     attr_reader :filter
     delegate :start_date, :end_date, :employment_type, :billable,
              :time_entries, :contractors, :employees, :invoices, to: :filter
@@ -37,6 +38,14 @@ module Reporting
     def utilization
       hours_billed / available_hours_of_employees
     end
+
+    def hours_miss
+      target_hours_of_employees - hours_billed
+    end
+
+    def miss_in_revenue_from_hours_miss
+      hours_miss * ER_TARGET
+    end    
 
     def available_hours_of_employees
       @available_hours_of_employees ||= begin
