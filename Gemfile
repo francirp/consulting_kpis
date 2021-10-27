@@ -25,6 +25,7 @@ gem 'httparty'
 gem 'nokogiri'
 gem "sprockets", "<4"
 gem 'activeadmin'
+gem 'activeadmin_addons'
 gem 'bootstrap-datepicker-rails'
 
 group :development do

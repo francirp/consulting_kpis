@@ -1,6 +1,11 @@
 class Project < ApplicationRecord
   has_many :time_entries
+  has_many :task_assignments
+  has_many :tasks, through: :task_assignments
   belongs_to :client, optional: true
+
+  scope :active, -> { where(is_active: true )}
+  scope :billable, -> { where(is_billable: true )}
 
   def rounded_hours
     time_entries.sum(:rounded_hours).round(2)

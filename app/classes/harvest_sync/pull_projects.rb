@@ -12,6 +12,8 @@ module HarvestSync
           harvest_client_id: project.client.id,
           hourly_rate: project.hourly_rate,
           hourly: project.hourly_rate.present?,
+          is_active: project.is_active,
+          is_billable: project.is_billable,
           created_at: Time.now,
           updated_at: Time.now,
         }
