@@ -1,6 +1,7 @@
 ActiveAdmin.register TeamMember do
   permit_params :first_name, :last_name, :is_contractor, :email,
-                :is_active, :start_date, :end_date, :billable_target_ratio
+                :is_active, :start_date, :end_date, :billable_target_ratio,
+                :cost_per_hour  
 
   scope :active, default: true
   scope :inactive

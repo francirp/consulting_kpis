@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_19_112611) do
+ActiveRecord::Schema.define(version: 2021_10_28_020204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,8 +147,35 @@ ActiveRecord::Schema.define(version: 2021_07_19_112611) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "client_id"
     t.float "revenue"
+    t.boolean "is_active"
+    t.boolean "is_billable"
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["harvest_id"], name: "index_projects_on_harvest_id", unique: true
+  end
+
+  create_table "task_assignments", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "task_id", null: false
+    t.boolean "is_active"
+    t.integer "harvest_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["harvest_id"], name: "index_task_assignments_on_harvest_id", unique: true
+    t.index ["project_id"], name: "index_task_assignments_on_project_id"
+    t.index ["task_id"], name: "index_task_assignments_on_task_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.boolean "is_active"
+    t.integer "harvest_id"
+    t.boolean "billable_by_default"
+    t.string "name"
+    t.boolean "is_default"
+    t.datetime "harvest_created_at"
+    t.datetime "harvest_updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["harvest_id"], name: "index_tasks_on_harvest_id", unique: true
   end
 
   create_table "team_members", force: :cascade do |t|
@@ -163,6 +190,9 @@ ActiveRecord::Schema.define(version: 2021_07_19_112611) do
     t.date "start_date"
     t.date "end_date"
     t.float "billable_target_ratio"
+    t.bigint "task_id"
+    t.float "cost_per_hour"
+    t.index ["task_id"], name: "index_team_members_on_task_id"
   end
 
   create_table "time_entries", force: :cascade do |t|
@@ -191,6 +221,29 @@ ActiveRecord::Schema.define(version: 2021_07_19_112611) do
     t.index ["project_id"], name: "index_time_entries_on_project_id"
   end
 
+  create_table "timesheet_allocations", force: :cascade do |t|
+    t.bigint "timesheet_id", null: false
+    t.float "allocation"
+    t.bigint "project_id", null: false
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "task_id", null: false
+    t.index ["project_id"], name: "index_timesheet_allocations_on_project_id"
+    t.index ["task_id"], name: "index_timesheet_allocations_on_task_id"
+    t.index ["timesheet_id"], name: "index_timesheet_allocations_on_timesheet_id"
+  end
+
+  create_table "timesheets", force: :cascade do |t|
+    t.bigint "team_member_id", null: false
+    t.date "week"
+    t.float "non_working_days"
+    t.integer "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_member_id"], name: "index_timesheets_on_team_member_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -213,5 +266,12 @@ ActiveRecord::Schema.define(version: 2021_07_19_112611) do
   add_foreign_key "contracts", "team_members"
   add_foreign_key "invoices", "clients"
   add_foreign_key "projects", "clients"
+  add_foreign_key "task_assignments", "projects"
+  add_foreign_key "task_assignments", "tasks"
+  add_foreign_key "team_members", "tasks"
   add_foreign_key "time_entries", "projects"
+  add_foreign_key "timesheet_allocations", "projects"
+  add_foreign_key "timesheet_allocations", "tasks"
+  add_foreign_key "timesheet_allocations", "timesheets"
+  add_foreign_key "timesheets", "team_members"
 end

@@ -9,17 +9,11 @@ module Reporting
     def initialize(filter, employee, opts = {})
       @filter = filter
       @employee = employee
-      @employee_time_entries = opts[:time_entries]
+      @employee_time_entries = opts.fetch(:time_entries, set_employee_time_entries)
     end
 
     def available_hours
-      return 0 unless employee.start_date
-      return 0 if employee.start_date > end_date # employee started after this reporting period
-      return 0 if employee.end_date && employee.end_date < start_date # employee ended before this reporting period
-      team_member_start = [start_date, employee.start_date].compact.max # because an employee can start before the reporting period
-      # TODO: add accurate end date for each team member
-      team_member_end = [end_date, employee.end_date].compact.min # employee can end in the middle of this reporting period.
-      days = (team_member_end - team_member_start).to_i + 1
+      days = filter.days_in_period_for_team_member(employee)
       potential_hours_per_day = AVAILABLE_HOURS_PER_PERSON/365.0
       days * potential_hours_per_day
     end
@@ -55,8 +49,8 @@ module Reporting
 
     private
 
-    def employee_time_entries
-      @employee_time_entries ||= time_entries.where(team_member_id: employee.id)
+    def set_employee_time_entries
+      time_entries.where(team_member_id: employee.id)
     end    
   end
 end
