@@ -6,7 +6,6 @@ class ClientsController < ApplicationController
     invoices = Invoice.non_retainers.between(@start_date, @end_date).group_by(&:client_id)
     @key_metrics = Reporting::KeyMetrics.new(@filter)
     time_entries = @filter.time_entries.includes(:team_member).joins(:team_member)
-    binding.pry
     @clients_key_metrics = @clients.map do |client|
       Reporting::ClientKeyMetrics.new(
         @filter,

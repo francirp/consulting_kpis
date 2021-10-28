@@ -48,21 +48,21 @@ module Reporting
       days = (team_member_end - team_member_start).to_i + 1
     end
     
-    def cost_by_team_member
-      team_member_ids = time_entries.pluck(:team_member_id).uniq
-      team_members = TeamMember.where(id: team_member_ids)
+    # def cost_by_team_member
+    #   team_member_ids = time_entries.pluck(:team_member_id).uniq
+    #   team_members = TeamMember.where(id: team_member_ids)
       
-      hash = {}
-      team_members.each do |team_member|
-        if team_member.is_contractor?
-          cost = time_entries.find_all { |t| t.team_member_id == team_member.id }.sum(&:rounded_hours) * team_member.cost_per_hour
-        else
-          days = days_in_period_for_team_member(team_member)
-          cost = team_member.cost_per_hour * (days/365.0) * Reporting::EmployeeKeyMetrics::BASELINE_TARGET_HOURS_PER_PERSON
-        end
-        hash[team_member.id] = cost
-      end
-      hash
-    end
+    #   hash = {}
+    #   team_members.each do |team_member|
+    #     if team_member.is_contractor?
+    #       cost = time_entries.find_all { |t| t.team_member_id == team_member.id }.sum(&:rounded_hours) * team_member.cost_per_hour
+    #     else
+    #       days = days_in_period_for_team_member(team_member)
+    #       cost = team_member.cost_per_hour * (days/365.0) * Reporting::EmployeeKeyMetrics::BASELINE_TARGET_HOURS_PER_PERSON
+    #     end
+    #     hash[team_member.id] = cost
+    #   end
+    #   hash
+    # end
   end
 end

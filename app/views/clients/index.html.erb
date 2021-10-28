@@ -11,6 +11,10 @@
         <th>Effective Rate</th>
         <th>Gross Cost</th>
         <th>Gross Profit</th>
+        <th>GP %</th>
+        <th>Net Cost</th>
+        <th>Net Profit</th>
+        <th>NP %</th>
       </tr>
     </thead>
     <tbody>
@@ -22,14 +26,29 @@
           <td><%= number_to_currency(client_key_metrics.effective_rate, precision: 0) %></td>
           <td><%= number_to_currency(client_key_metrics.gross_cost, precision: 0) %></td>
           <td><%= number_to_currency(client_key_metrics.gross_profit, precision: 0) %></td>
+          <td><%= number_to_percentage(client_key_metrics.gross_profit_percentage * 100, precision: 0) %></td>
+          <td><%= number_to_currency(client_key_metrics.net_cost, precision: 0) %></td>
+          <td><%= number_to_currency(client_key_metrics.net_profit, precision: 0) %></td>
+          <td><%= number_to_percentage(client_key_metrics.net_profit_percentage * 100, precision: 0) %></td>
         </tr>
       <% end %>
+      <% revenue = @clients_key_metrics.map(&:revenue).sum %>
+      <% gross_cost = @clients_key_metrics.map(&:gross_cost).sum %>
+      <% gross_profit = @clients_key_metrics.map(&:gross_profit).sum %>
+      <% gross_profit_percentage = gross_profit / revenue %>
+      <% net_cost = @clients_key_metrics.map(&:net_cost).sum %>
+      <% net_profit = @clients_key_metrics.map(&:net_profit).sum %>
+      <% net_profit_percentage = net_profit / revenue %>
       <tr>
         <td><strong>Total</strong></td>
-        <td><strong><%= number_to_currency(@key_metrics.revenue, precision: 0) %><strong></td>
+        <td><strong><%= number_to_currency(revenue, precision: 0) %><strong></td>
         <td><strong><%= number_to_currency(@key_metrics.effective_rate, precision: 0) %><strong></td>
-        <td><strong><%= number_to_currency(@clients_key_metrics.map(&:gross_cost).sum, precision: 0) %><strong></td>
-        <td><strong><%= number_to_currency(@clients_key_metrics.map(&:gross_profit).sum, precision: 0) %><strong></td>
+        <td><strong><%= number_to_currency(gross_cost, precision: 0) %><strong></td>
+        <td><strong><%= number_to_currency(gross_profit, precision: 0) %><strong></td>
+        <td><strong><%= number_to_percentage(gross_profit_percentage, precision: 0) %><strong></td>
+        <td><strong><%= number_to_currency(net_cost, precision: 0) %><strong></td>
+        <td><strong><%= number_to_currency(net_profit, precision: 0) %><strong></td>
+        <td><strong><%= number_to_percentage(net_profit_percentage, precision: 0) %><strong></td>        
       </tr>
     </tbody>
   </table>

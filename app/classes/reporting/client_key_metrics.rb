@@ -36,6 +36,22 @@ module Reporting
       @gross_profit ||= revenue - gross_cost
     end
 
+    def gross_profit_percentage
+      gross_profit / revenue
+    end
+
+    def net_cost
+      gross_cost * 1.48
+    end
+
+    def net_profit
+      revenue - net_cost
+    end
+
+    def net_profit_percentage
+      net_profit / revenue
+    end
+
     private
 
     def set_client_time_entries
