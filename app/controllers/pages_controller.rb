@@ -2,13 +2,9 @@ class PagesController < ApplicationController
   before_action :set_filters
 
   def dashboard
-    filter = Reporting::Filter.new(
-      start_date: @start_date,
-      end_date: @end_date,
-    )
-    @key_metrics = Reporting::KeyMetrics.new(filter)
+    @key_metrics = Reporting::KeyMetrics.new(@filter)
 
-    no_contractors_filter = filter.dup
+    no_contractors_filter = @filter.dup
     no_contractors_filter.employment_type = 'Employee'
     @key_metrics_no_contractors = Reporting::KeyMetrics.new(no_contractors_filter)
   end
