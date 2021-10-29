@@ -4,8 +4,7 @@ module Reporting
     BASELINE_TARGET_HOURS_PER_PERSON = 1300.0
 
     attr_reader :filter, :employee, :employee_time_entries
-    delegate :time_entries, :start_date, :end_date, :invoices_by_client_id,
-             :time_entries_by_client_id, :invoices, to: :filter
+    delegate :time_entries, :start_date, :end_date, :invoices, to: :filter
 
     def initialize(filter, employee, opts = {})
       @filter = filter

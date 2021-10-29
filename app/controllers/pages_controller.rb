@@ -13,7 +13,6 @@ class PagesController < ApplicationController
     result = ReportDecanter.decant(params[:report])
     session[:start_date] = result[:start_date] if result[:start_date]
     session[:end_date] = result[:end_date] if result[:end_date]
-    session[:team_member_id] = result[:team_member_id] if result[:team_member_id]
     redirect_back fallback_location: dashboard_path
   end
 end
