@@ -12,6 +12,6 @@ class ApplicationController < ActionController::Base
     @filter = Reporting::Filter.new(
       start_date: @start_date,
       end_date: @end_date,
-    )    
+    )
   end
 end

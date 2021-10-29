@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'pages#dashboard', as: "dashboard"
   resources :projects
-  resources :clients
+  resources :team_members
+  resources :clients, only: [:index]
 
   post '/update-report' => 'pages#update_report', as: :update_report
 

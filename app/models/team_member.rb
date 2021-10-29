@@ -6,6 +6,7 @@ class TeamMember < ApplicationRecord
   scope :active, -> { where(is_active: true) }
   scope :inactive, -> { where.not(is_active: true) }
   has_many :time_entries
+  has_many :clients, -> { distinct }, through: :time_entries
 
   before_save :set_end_date, unless: :is_active?
 

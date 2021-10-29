@@ -7,5 +7,9 @@
     <%= f.label :end_date %>
     <%= f.text_field :end_date, class: 'datepicker', value: @end_date.strftime('%m/%d/%Y') %>
   </div>
+  <div class="form-group">
+    <%= f.label :team_member_id, 'Team Member' %>
+    <%= f.select :team_member_id, options_from_collection_for_select(TeamMember.employees, 'id', 'name', @team_member.try(:id)), prompt: "Select Employee" %>
+  </div>  
   <%= submit_tag 'Update Data', class: 'btn btn-default' %>
 <% end %> 

@@ -2,9 +2,13 @@ module Reporting
   class KeyMetrics
     POTENTIAL_HOURS_PER_YEAR_PER_PERSON = 1572
     ER_TARGET = 160.0
+    NET_UTILIZATION_TARGET = 0.83
+    OVERHEAD_FACTOR = 1.48
     attr_reader :filter
     delegate :start_date, :end_date, :employment_type, :billable,
-             :time_entries, :contractors, :employees, :invoices, to: :filter
+             :time_entries, :contractors, :employees, :invoices,
+             :time_entries_by_team_member_id, :time_entries_by_client_id,
+             :invoices_by_client_id, to: :filter
 
     def initialize(filter)
       @filter = filter
@@ -22,17 +26,37 @@ module Reporting
       revenue / hours_billed
     end
 
-    def hours_by_employee
-      array = employees.map do |employee|
-        employee_time_entries = time_entries.find_all { |t| t.team_member_id == employee.id }
-        EmployeeKeyMetrics.new(
+    def metrics_by_employee
+      @metrics_by_employee ||= begin
+        array = employees.map do |employee|
+          employee_time_entries = time_entries_by_team_member_id[employee.id] || []
+          EmployeeKeyMetrics.new(
+            filter,
+            employee,
+            time_entries: employee_time_entries,
+          )
+        end
+        array.reject! { |e| e.not_active? }
+        array.compact.sort_by { |e| e.variance }
+      end
+    end
+
+    def clients
+      @clients ||= Client.where(id: time_entries.distinct.pluck(:client_id))
+    end
+
+    def metrics_by_client
+      @metrics_by_client ||= clients.map do |client|
+        client_time_entries = time_entries_by_client_id[client.id] || []
+        client_invoices = invoices_by_client_id[client.id] || []
+        ClientKeyMetrics.new(
           filter,
-          employee,
-          time_entries: employee_time_entries,
+          client,
+          time_entries: client_time_entries,
+          invoices: client_invoices,
         )
       end
-      array.reject! { |e| e.not_active? }
-      array.compact.sort_by { |e| e.variance }
+      # array.compact.sort_by { |e| e.variance }
     end
 
     def utilization
@@ -49,7 +73,7 @@ module Reporting
 
     def available_hours_of_employees
       @available_hours_of_employees ||= begin
-        hours_by_employee.sum do |employee_metrics|
+        metrics_by_employee.sum do |employee_metrics|
           employee_metrics.available_hours
         end
       end
@@ -57,7 +81,7 @@ module Reporting
     
     def target_hours_of_employees
       @target_hours_of_employees ||= begin
-        hours_by_employee.sum do |employee_metrics|
+        metrics_by_employee.sum do |employee_metrics|
           employee_metrics.target_hours
         end
       end
@@ -65,7 +89,7 @@ module Reporting
 
     def net_available_hours_of_employees
       @net_available_hours_of_employees ||= begin
-        hours_by_employee.sum do |employee_metrics|
+        metrics_by_employee.sum do |employee_metrics|
           employee_metrics.net_available_hours
         end
       end
@@ -86,6 +110,34 @@ module Reporting
     
     def hours_variance
       hours_billed - target_hours_of_employees
+    end
+
+    def percent_of_team_members_hours
+      1
+    end
+
+    def gross_cost
+      @gross_cost ||= time_entries.sum("rounded_hours * team_members.cost_per_hour")
+    end
+
+    def gross_profit
+      @gross_profit ||= revenue - gross_cost
+    end
+
+    def gross_profit_percentage
+      gross_profit / revenue
+    end
+
+    def net_cost
+      @net_cost ||= gross_cost * OVERHEAD_FACTOR
+    end
+
+    def net_profit
+      revenue - net_cost
+    end
+
+    def net_profit_percentage
+      net_profit / revenue
     end
   end
 end
