@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_28_020204) do
+ActiveRecord::Schema.define(version: 2021_11_18_185506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,8 @@ ActiveRecord::Schema.define(version: 2021_10_28_020204) do
     t.float "revenue"
     t.boolean "is_active"
     t.boolean "is_billable"
+    t.string "asana_id"
+    t.index ["asana_id"], name: "index_projects_on_asana_id", unique: true
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["harvest_id"], name: "index_projects_on_harvest_id", unique: true
   end
@@ -192,6 +194,8 @@ ActiveRecord::Schema.define(version: 2021_10_28_020204) do
     t.float "billable_target_ratio"
     t.bigint "task_id"
     t.float "cost_per_hour"
+    t.string "asana_id"
+    t.index ["asana_id"], name: "index_team_members_on_asana_id", unique: true
     t.index ["task_id"], name: "index_team_members_on_task_id"
   end
 
