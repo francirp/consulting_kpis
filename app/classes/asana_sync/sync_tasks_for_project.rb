@@ -8,6 +8,7 @@ module AsanaSync
     end
 
     def call
+      puts "Syncing tasks for #{asana_project.name}"
       team_members = TeamMember.where.not(asana_id: nil).group_by(&:asana_id)
 
       keep_fetching = true
@@ -19,7 +20,8 @@ module AsanaSync
           offset_token: offset_token
         )
         service.call
-        
+        return if service.data.empty? # no tasks for this project
+
         array = service.data.map do |task|
           hash = AsanaSync::TransformTask.new(task).call
           assignee_id = task.dig("assignee", "gid")
@@ -35,6 +37,7 @@ module AsanaSync
         offset_token = service.response_offset_token
         keep_fetching = offset_token.present?
       end
+      puts "Done syncing tasks for #{asana_project.name}"
     end
   end
 end
