@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_18_185506) do
+ActiveRecord::Schema.define(version: 2021_11_22_141236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,31 @@ ActiveRecord::Schema.define(version: 2021_11_18_185506) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "asana_projects", force: :cascade do |t|
+    t.string "asana_id"
+    t.string "name"
+    t.boolean "archived"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["asana_id"], name: "index_asana_projects_on_asana_id", unique: true
+  end
+
+  create_table "asana_tasks", force: :cascade do |t|
+    t.string "asana_id"
+    t.string "name"
+    t.date "completed_on"
+    t.date "due_on"
+    t.float "size"
+    t.integer "unit_type"
+    t.bigint "team_member_id"
+    t.bigint "asana_project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["asana_id"], name: "index_asana_tasks_on_asana_id", unique: true
+    t.index ["asana_project_id"], name: "index_asana_tasks_on_asana_project_id"
+    t.index ["team_member_id"], name: "index_asana_tasks_on_team_member_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -267,6 +292,8 @@ ActiveRecord::Schema.define(version: 2021_11_18_185506) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "asana_tasks", "asana_projects"
+  add_foreign_key "asana_tasks", "team_members"
   add_foreign_key "contracts", "team_members"
   add_foreign_key "invoices", "clients"
   add_foreign_key "projects", "clients"

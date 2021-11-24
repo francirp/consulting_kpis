@@ -1,6 +1,6 @@
 module AsanaApi
   class GetProjects
-    attr_reader :client, :offset_token
+    attr_reader :client, :offset_token, :response
 
     def initialize(opts = {})
       @client = ApiWrapper.new
@@ -8,7 +8,15 @@ module AsanaApi
     end
 
     def call
-      response = client.get('/1.0/projects', query: query)
+      @response = client.get('/1.0/projects', query: query)
+    end
+
+    def response_offset_token
+      response.dig("next_page", "offset")
+    end
+
+    def data
+      response.dig('data')
     end
 
     private
@@ -25,7 +33,7 @@ module AsanaApi
     end
 
     def fields
-      'name,email,gid'
+      'name,gid,created_at,modified_at,archived'
     end
   end
 end
