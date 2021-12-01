@@ -13,11 +13,12 @@ module AsanaSync
         
         ids = []
         array = service.data.map do |project|
+          existing_project = projects.detect { |p| p.asana_id == project["gid"] }
           puts project
           { 
             asana_id: project["gid"],            
             name: project["name"],            
-            archived: project["archived"],            
+            archived: project["archived"] || existing_project.ignore?, # archive any projects that we have flagged as "ignore"            
             created_at: DateTime.parse(project["created_at"]),            
             updated_at: DateTime.parse(project["modified_at"]),            
           }

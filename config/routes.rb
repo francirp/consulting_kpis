@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root to: 'pages#dashboard', as: "dashboard"
   resources :projects
   resources :team_members
-  resources :clients, only: [:index]
+  resources :clients, only: [:index, :show]
 
   post '/update-report' => 'pages#update_report', as: :update_report
 

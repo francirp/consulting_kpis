@@ -1,5 +1,6 @@
 module AsanaSync
   class TransformTask
+    extend Memoist
     attr_reader :task_json
 
     def initialize(task_json)
@@ -61,9 +62,15 @@ module AsanaSync
     def size
       return nil unless estimation_field
       estimation_field["number_value"]
-    end    
+    end
+    
+    def dev_days
+      return size if ["dev_days", "points"].include?(unit_type)
+      return size / 6.0 if unit_type == "hours"
+    end
 
     def unit_type
+      @unit_type ||= set_unit_type  
       return nil unless estimation_field
       name = estimation_field["name"].downcase
       return "hours" if name.include?("hour") 
@@ -71,5 +78,6 @@ module AsanaSync
       return "points" if name.include?("point") 
       nil
     end
+    memoize :unit_type
   end
 end

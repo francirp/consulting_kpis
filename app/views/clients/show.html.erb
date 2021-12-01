@@ -1,0 +1,12 @@
+<div class="row">
+  <h1><%= @client.name %></h1>
+
+  <div class="row">
+    <h2># Tasks by Week</h2>
+    <%= line_chart @client_key_metrics.client_tasks.group_by_week(:completed_on).count %>
+  </div>
+  <div class="row">
+    <h2>Dev Days by Week</h2>
+    <%= line_chart @client_key_metrics.client_tasks.group_by_week(:completed_on).sum(:dev_days) %>
+  </div>
+</div>

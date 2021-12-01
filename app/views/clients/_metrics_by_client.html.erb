@@ -1,7 +1,7 @@
 <% metrics_by_client.each do |client_key_metrics| %>
   <% next unless client_key_metrics.client_invoices.any? %>   
   <tr>
-    <td><%= client_key_metrics.client.name %></td>
+    <td><%= link_to client_key_metrics.client.name, client_key_metrics.client %></td>
     <% if @team_member %>
       <td><%= number_to_percentage(client_key_metrics.team_member_percent * 100, precision: 0) %></td>
       <td><%= number_to_percentage(client_key_metrics.percent_of_team_members_hours * 100, precision: 0) %></td>
@@ -10,6 +10,7 @@
     <% if @team_member %>
       <td><%= number_to_currency(client_key_metrics.revenue_attributable_to_team_member, precision: 0) %></td>
     <% end %>
+    <td><%= client_key_metrics.velocity > 0 ? number_with_precision(client_key_metrics.velocity, precision: 1) : '-' %></td>
     <td><%= number_to_currency(client_key_metrics.effective_rate, precision: 0) %></td>
     <td><%= number_to_currency(client_key_metrics.gross_cost, precision: 0) %></td>
     <td><%= number_to_currency(client_key_metrics.gross_profit, precision: 0) %></td>

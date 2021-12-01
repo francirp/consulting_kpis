@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_22_141236) do
+ActiveRecord::Schema.define(version: 2021_12_01_011516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,7 +75,10 @@ ActiveRecord::Schema.define(version: 2021_11_22_141236) do
     t.boolean "archived"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "client_id"
+    t.boolean "ignore"
     t.index ["asana_id"], name: "index_asana_projects_on_asana_id", unique: true
+    t.index ["client_id"], name: "index_asana_projects_on_client_id"
   end
 
   create_table "asana_tasks", force: :cascade do |t|
@@ -89,8 +92,11 @@ ActiveRecord::Schema.define(version: 2021_11_22_141236) do
     t.bigint "asana_project_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "dev_days"
+    t.bigint "client_id"
     t.index ["asana_id"], name: "index_asana_tasks_on_asana_id", unique: true
     t.index ["asana_project_id"], name: "index_asana_tasks_on_asana_project_id"
+    t.index ["client_id"], name: "index_asana_tasks_on_client_id"
     t.index ["team_member_id"], name: "index_asana_tasks_on_team_member_id"
   end
 
@@ -292,7 +298,9 @@ ActiveRecord::Schema.define(version: 2021_11_22_141236) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "asana_projects", "clients"
   add_foreign_key "asana_tasks", "asana_projects"
+  add_foreign_key "asana_tasks", "clients"
   add_foreign_key "asana_tasks", "team_members"
   add_foreign_key "contracts", "team_members"
   add_foreign_key "invoices", "clients"

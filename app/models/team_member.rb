@@ -11,6 +11,10 @@ class TeamMember < ApplicationRecord
 
   before_save :set_end_date, unless: :is_active?
 
+  def cost_per_hour
+    attributes[:cost_per_hour] || 0.0
+  end
+
   def billable_target_ratio
     attributes['billable_target_ratio'] || 1.0
   end

@@ -4,14 +4,15 @@ module Reporting
     BASELINE_TARGET_HOURS_PER_PERSON = 1300.0
 
     attr_reader :filter, :client, :client_time_entries, :client_invoices, :team_member,
-                :team_member_hours
-    delegate :time_entries, :invoices, :start_date, :end_date, to: :filter
+                :team_member_hours, :client_tasks
+    delegate :time_entries, :completed_tasks, :invoices, :start_date, :end_date, to: :filter
 
     def initialize(filter, client, opts = {})
       @filter = filter
       @client = client
       @client_time_entries = opts.fetch(:time_entries) { set_client_time_entries }
       @client_invoices = opts.fetch(:invoices) { set_client_invoices }
+      @client_tasks = opts.fetch(:tasks) { set_client_tasks }
       @team_member = opts[:team_member] # for metrics about the team member's relationship to client
       @team_member_hours = opts[:team_member_hours]
     end
@@ -76,6 +77,15 @@ module Reporting
       @percent_of_team_members_hours ||= team_member_hours_for_client / team_member_hours
     end
 
+    def dev_days      
+      client_tasks.map(&:dev_days).compact.sum.round(1)
+    end
+
+    def velocity
+      return 0 unless hours_billed
+      ((dev_days / hours_billed.to_f) * 100.0).round(1)
+    end
+
     private
 
     def set_client_time_entries
@@ -84,6 +94,10 @@ module Reporting
     
     def set_client_invoices
       invoices.find_all { |i| i.client_id == client.id }
-    end      
+    end
+    
+    def set_client_tasks
+      completed_tasks.where(client_id: client.id) # chartkick depends on an activerecord collection
+    end 
   end
 end

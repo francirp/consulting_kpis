@@ -3,13 +3,20 @@ module Reporting
     AVAILABLE_HOURS_PER_PERSON = 1572.0
     BASELINE_TARGET_HOURS_PER_PERSON = 1300.0
 
-    attr_reader :filter, :employee, :employee_time_entries
-    delegate :time_entries, :start_date, :end_date, :invoices, to: :filter
+    attr_reader :filter, :employee, :employee_time_entries, :employee_completed_tasks
+    delegate :time_entries, :completed_tasks, :start_date, :end_date, :invoices, to: :filter
 
     def initialize(filter, employee, opts = {})
       @filter = filter
       @employee = employee
       @employee_time_entries = opts.fetch(:time_entries) { set_employee_time_entries }
+      if opts[:include_tasks]
+        @employee_completed_tasks = opts.fetch(:tasks) { set_completed_tasks }
+      end
+    end
+
+    def output
+      employee_completed_tasks.map(&:size).compact.sum
     end
 
     def available_hours
@@ -133,6 +140,10 @@ module Reporting
 
     def set_employee_time_entries
       time_entries.where(team_member_id: employee.id)
-    end    
+    end
+    
+    def set_completed_tasks
+      completed_tasks.where(team_member_id: employee.id)
+    end     
   end
 end
