@@ -9,6 +9,11 @@ task :refresh_monthly_harvest_data => :environment do
   RefreshHarvestData.new(start_date).call
 end
 
+task :refresh_asana_tasks => :environment do
+  start_date = Date.today.beginning_of_year
+  RefreshAsanaData.new(start_date).call
+end
+
 task :refresh_invoices => :environment do
   puts 'starting invoice updater...'
   invoice_updater = ExportData::ToGoogleSheets::Invoices.new

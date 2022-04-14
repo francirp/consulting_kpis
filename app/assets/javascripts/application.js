@@ -17,6 +17,8 @@
 //= require_tree .
 //= require bootstrap-datepicker/core
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.es.js
+//= require chartkick
+//= require Chart.bundle
 
 $(document).ready(function(){
   $('.datepicker').datepicker();

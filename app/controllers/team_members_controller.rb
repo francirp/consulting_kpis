@@ -9,6 +9,10 @@ class TeamMembersController < ApplicationController
 
   def show
     @team_member = TeamMember.find(params[:id])
-    @employee_key_metrics = Reporting::EmployeeKeyMetrics.new(@filter, @team_member)
+    @employee_key_metrics = Reporting::EmployeeKeyMetrics.new(
+      @filter,
+      @team_member,
+      include_tasks: true
+    )
   end
 end

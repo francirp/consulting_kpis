@@ -7,8 +7,13 @@ class TeamMember < ApplicationRecord
   scope :inactive, -> { where.not(is_active: true) }
   has_many :time_entries
   has_many :clients, -> { distinct }, through: :time_entries
+  has_many :asana_tasks
 
   before_save :set_end_date, unless: :is_active?
+
+  def cost_per_hour
+    attributes[:cost_per_hour] || 0.0
+  end
 
   def billable_target_ratio
     attributes['billable_target_ratio'] || 1.0
