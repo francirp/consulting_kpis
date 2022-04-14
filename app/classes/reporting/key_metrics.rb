@@ -37,12 +37,12 @@ module Reporting
         )
       end
       array.reject! { |e| e.not_active? }
-      array.compact.sort_by { |e| e.variance }
+      array.compact
     end
     memoize :metrics_by_employee
 
     def clients
-      @clients ||= Client.where(id: time_entries.distinct.pluck(:client_id))
+      @clients ||= Client.where(id: time_entries.distinct.pluck(:client_id)).order("name ASC")
     end
 
     def metrics_by_client

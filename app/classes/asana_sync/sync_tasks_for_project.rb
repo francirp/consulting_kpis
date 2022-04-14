@@ -20,7 +20,7 @@ module AsanaSync
           offset_token: offset_token
         )
         service.call
-        return if service.data.empty? # no tasks for this project
+        return if service.data.blank? # no tasks for this project
 
         array = service.data.map do |task|
           hash = AsanaSync::TransformTask.new(task).call

@@ -68,7 +68,7 @@ module Reporting
     end
 
     def employees
-      @employees ||= TeamMember.employees
+      @employees ||= TeamMember.employees.order(first_name: :asc, last_name: :asc)
     end
 
     def days_in_period_for_team_member(member)

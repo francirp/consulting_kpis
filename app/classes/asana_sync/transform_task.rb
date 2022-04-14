@@ -70,7 +70,6 @@ module AsanaSync
     end
 
     def unit_type
-      @unit_type ||= set_unit_type  
       return nil unless estimation_field
       name = estimation_field["name"].downcase
       return "hours" if name.include?("hour") 

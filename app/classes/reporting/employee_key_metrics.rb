@@ -15,8 +15,13 @@ module Reporting
       end
     end
 
-    def output
-      employee_completed_tasks.map(&:size).compact.sum
+    def dev_days
+      employee_completed_tasks.map(&:dev_days).compact.sum
+    end    
+
+    def velocity
+      return 0 unless hours_billed
+      ((dev_days / hours_billed.to_f) * 100.0).round(1)
     end
 
     def available_hours
@@ -132,6 +137,7 @@ module Reporting
     end
 
     def clients_net_profit_percentage
+      return 0.0 unless clients_revenue > 0
       clients_net_profit / clients_revenue
     end
 

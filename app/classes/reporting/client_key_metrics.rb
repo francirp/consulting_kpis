@@ -67,6 +67,14 @@ module Reporting
       end
     end
 
+    def team_member_dev_days
+      return 0 unless team_member
+      @team_member_dev_days ||= client_tasks.sum do |t|
+        next 0 unless t.team_member_id == team_member.id
+        t.dev_days || 0.0
+      end
+    end
+
     def team_member_percent
       return 0 unless team_member
       @team_member_percent ||= team_member_hours_for_client / hours_billed
@@ -84,6 +92,11 @@ module Reporting
     def velocity
       return 0 unless hours_billed
       ((dev_days / hours_billed.to_f) * 100.0).round(1)
+    end
+
+    def team_member_velocity
+      return 0 unless team_member_hours_for_client && team_member_hours_for_client > 0
+      ((team_member_dev_days / team_member_hours_for_client.to_f) * 100.0).round(1)
     end
 
     private

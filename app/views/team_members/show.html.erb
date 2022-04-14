@@ -16,34 +16,20 @@
     <thead>
       <tr>
         <th>Client</th>
-        <th>% of Team's Hours</th>
-        <th>% of Individual's Hours</th>
-        <th>Client Revenue</th>
-        <th>Revenue Attributable to <%= @team_member.first_name %></th>        
+        <th>Client Revenue</th>     
+        <th>Project Velocity</th>
+        <th>Employee Velocity</th>
         <th>Effective Rate</th>
-        <th>Gross Cost</th>
-        <th>Gross Profit</th>
-        <th>GP %</th>
-        <th>Net Cost</th>
-        <th>Net Profit</th>
-        <th>NP %</th>
       </tr>
     </thead>
     <tbody>
       <%= render 'clients/metrics_by_client', metrics_by_client: @employee_key_metrics.metrics_by_client %>
       <tr>
         <td><strong>Total</strong></td>
-        <td>-</td>
-        <td><strong><%= number_to_percentage(@employee_key_metrics.clients_percent_of_hours * 100, precision: 0) %></strong></td>
         <td><strong><%= number_to_currency(@employee_key_metrics.clients_revenue, precision: 0) %><strong></td>
-        <td><strong><%= number_to_currency(@employee_key_metrics.revenue_attributable_to_employee, precision: 0) %><strong></td>
+        <td>-</td>        
+        <td><%= @employee_key_metrics.velocity > 0 ? number_with_precision(@employee_key_metrics.velocity, precision: 1) : '-' %></td>        
         <td><strong><%= number_to_currency(@employee_key_metrics.clients_effective_rate, precision: 0) %><strong></td>
-        <td><strong><%= number_to_currency(@employee_key_metrics.clients_gross_cost, precision: 0) %><strong></td>
-        <td><strong><%= number_to_currency(@employee_key_metrics.clients_gross_profit, precision: 0) %><strong></td>
-        <td><strong><%= number_to_percentage(@employee_key_metrics.clients_gross_profit_percentage * 100, precision: 0) %><strong></td>
-        <td><strong><%= number_to_currency(@employee_key_metrics.clients_net_cost, precision: 0) %><strong></td>
-        <td><strong><%= number_to_currency(@employee_key_metrics.clients_net_profit, precision: 0) %><strong></td>
-        <td><strong><%= number_to_percentage(@employee_key_metrics.clients_net_profit_percentage * 100, precision: 0) %><strong></td> 
         <% if false %>
         <% end %>
       </tr>
