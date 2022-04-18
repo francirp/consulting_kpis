@@ -3,9 +3,9 @@
   <tr>
     <td><%= link_to client_key_metrics.client.name, client_key_metrics.client %></td>
     <td><%= number_to_currency(client_key_metrics.revenue, precision: 0) %></td>
-    <td><%= client_key_metrics.velocity > 0 ? number_with_precision(client_key_metrics.velocity, precision: 1) : '-' %></td>
+    <td><%= client_key_metrics.dev_days > 0 ? number_with_precision(client_key_metrics.dev_days, precision: 1) : '-' %></td>
     <% if @team_member %>
-      <td><%= client_key_metrics.team_member_velocity > 0 ? number_with_precision(client_key_metrics.team_member_velocity, precision: 1) : '-' %></td>
+      <td><%= client_key_metrics.team_member_dev_days > 0 ? number_with_precision(client_key_metrics.team_member_dev_days, precision: 1) : '-' %></td>
     <% end %>
     <td><%= number_to_currency(client_key_metrics.effective_rate, precision: 0) %></td>
   </tr>

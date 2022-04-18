@@ -17,8 +17,8 @@
       <tr>
         <th>Client</th>
         <th>Client Revenue</th>     
-        <th>Project Velocity</th>
-        <th>Employee Velocity</th>
+        <th>Project Dev Days</th>
+        <th>Employee Dev Days</th>
         <th>Effective Rate</th>
       </tr>
     </thead>
@@ -28,7 +28,7 @@
         <td><strong>Total</strong></td>
         <td><strong><%= number_to_currency(@employee_key_metrics.clients_revenue, precision: 0) %><strong></td>
         <td>-</td>        
-        <td><%= @employee_key_metrics.velocity > 0 ? number_with_precision(@employee_key_metrics.velocity, precision: 1) : '-' %></td>        
+        <td><%= @employee_key_metrics.dev_days > 0 ? number_with_precision(@employee_key_metrics.dev_days, precision: 1) : '-' %></td>        
         <td><strong><%= number_to_currency(@employee_key_metrics.clients_effective_rate, precision: 0) %><strong></td>
         <% if false %>
         <% end %>

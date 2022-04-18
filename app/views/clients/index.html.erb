@@ -8,7 +8,7 @@
       <tr>
         <th>Client</th>
         <th>Revenue (Invoiced)</th>
-        <th>Velocity</th>
+        <th>Dev Days Completed</th>
         <th>Effective Rate</th>
       </tr>
     </thead>
@@ -17,7 +17,7 @@
       <tr>
         <td><strong>Total</strong></td>
         <td><strong><%= number_to_currency(@key_metrics.revenue, precision: 0) %><strong></td>
-        <td><strong><%= number_with_precision(@key_metrics.velocity, precision: 1) %><strong></td>
+        <td><strong><%= number_with_precision(@key_metrics.dev_days, precision: 1) %><strong></td>
         <td><strong><%= number_to_currency(@key_metrics.effective_rate, precision: 0) %><strong></td>
       </tr>
     </tbody>
