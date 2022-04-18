@@ -59,7 +59,10 @@ module Reporting
 
     def invoices
       @invoices ||= begin
-        Invoice.between(start_date, end_date).where(is_retainer: false)
+        Invoice
+          .between(start_date, end_date)
+          .where(is_retainer: false)
+          .where.not(sent_at: nil)
       end
     end
 
