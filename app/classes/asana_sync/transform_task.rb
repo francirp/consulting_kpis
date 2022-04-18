@@ -16,6 +16,7 @@ module AsanaSync
         created_at: created_at,
         updated_at: updated_at,
         size: size,
+        dev_days: dev_days,
         unit_type: unit_type,
       }
     end

@@ -29,6 +29,7 @@ module AsanaSync
           hash.merge!(
             team_member_id: team_member.try(:id),
             asana_project_id: asana_project.id,
+            client_id: asana_project.client_id,
           )
           hash
         end
