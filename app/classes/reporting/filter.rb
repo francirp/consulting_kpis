@@ -26,7 +26,6 @@ module Reporting
       tasks = AsanaTask
         .completed_between(start_date, end_date)
         .includes(:team_member)
-        .joins(:team_member)
 
       tasks.where.not(team_member_id: contractors.pluck(:id)) if employee_only?
       tasks
