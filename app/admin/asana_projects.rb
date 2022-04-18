@@ -10,9 +10,10 @@ ActiveAdmin.register AsanaProject do
   batch_action :assign, form: {  
     client: Client.order("name ASC").pluck(:name, :id),
   } do |ids, inputs|
-    client = Client.find(inputs[:client])    
-    batch_action_collection.where(id: ids).update_all(client_id: client.id)
-    batch_action_collection.where(id: ids).each { |project| project.send(:update_asana_tasks) } # since update_all won't trigger the callbacks
+    client = Client.find(inputs[:client])
+    projects = batch_action_collection.where(id: ids)     
+    projects.update_all(client_id: client.id)
+    projects.each { |project| project.tasks.update_all(client_id: client.id) } # since update_all won't trigger the callbacks
     redirect_back(fallback_location: collection_path, alert: "The Asana projects have been assigned to #{client.name}.")
   end  
 
