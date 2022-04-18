@@ -66,6 +66,7 @@ module AsanaSync
     end
     
     def dev_days
+      return nil unless size
       return size if ["dev_days", "points"].include?(unit_type)
       return size / 6.0 if unit_type == "hours"
     end
