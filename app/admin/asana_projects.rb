@@ -17,8 +17,9 @@ ActiveAdmin.register AsanaProject do
 
   batch_action :ignore do |ids|
     batch_action_collection.where(id: ids).update_all(ignore: true)
+    batch_action_collection.where(id: ids).each { |project| project.send(:update_asana_tasks) } # since update_all won't trigger the callbacks
     redirect_back(fallback_location: collection_path, alert: "The Asana projects have been ignored.")
-  end  
+  end
 
   form do |f|
     f.inputs do
