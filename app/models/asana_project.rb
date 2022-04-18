@@ -8,7 +8,7 @@ class AsanaProject < ApplicationRecord
   scope :assigned, -> { not_ignored.active.where.not(client_id: nil) }
   scope :needs_assigned, -> { not_ignored.active.where(client_id: nil) }
 
-  after_update :update_asana_tasks, if: :saved_change_to_client_id?
+  after_update :update_asana_tasks
   before_save :update_archived_status, if: :saved_change_to_ignore?
 
   private
