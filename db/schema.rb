@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_04_015414) do
+ActiveRecord::Schema.define(version: 2021_12_01_011516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,37 @@ ActiveRecord::Schema.define(version: 2021_09_04_015414) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "asana_projects", force: :cascade do |t|
+    t.string "asana_id"
+    t.string "name"
+    t.boolean "archived"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "client_id"
+    t.boolean "ignore"
+    t.index ["asana_id"], name: "index_asana_projects_on_asana_id", unique: true
+    t.index ["client_id"], name: "index_asana_projects_on_client_id"
+  end
+
+  create_table "asana_tasks", force: :cascade do |t|
+    t.string "asana_id"
+    t.string "name"
+    t.date "completed_on"
+    t.date "due_on"
+    t.float "size"
+    t.integer "unit_type"
+    t.bigint "team_member_id"
+    t.bigint "asana_project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.float "dev_days"
+    t.bigint "client_id"
+    t.index ["asana_id"], name: "index_asana_tasks_on_asana_id", unique: true
+    t.index ["asana_project_id"], name: "index_asana_tasks_on_asana_project_id"
+    t.index ["client_id"], name: "index_asana_tasks_on_client_id"
+    t.index ["team_member_id"], name: "index_asana_tasks_on_team_member_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -179,8 +210,37 @@ ActiveRecord::Schema.define(version: 2021_09_04_015414) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "client_id"
     t.float "revenue"
+    t.boolean "is_active"
+    t.boolean "is_billable"
+    t.string "asana_id"
+    t.index ["asana_id"], name: "index_projects_on_asana_id", unique: true
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["harvest_id"], name: "index_projects_on_harvest_id", unique: true
+  end
+
+  create_table "task_assignments", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "task_id", null: false
+    t.boolean "is_active"
+    t.integer "harvest_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["harvest_id"], name: "index_task_assignments_on_harvest_id", unique: true
+    t.index ["project_id"], name: "index_task_assignments_on_project_id"
+    t.index ["task_id"], name: "index_task_assignments_on_task_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.boolean "is_active"
+    t.integer "harvest_id"
+    t.boolean "billable_by_default"
+    t.string "name"
+    t.boolean "is_default"
+    t.datetime "harvest_created_at"
+    t.datetime "harvest_updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["harvest_id"], name: "index_tasks_on_harvest_id", unique: true
   end
 
   create_table "team_members", force: :cascade do |t|
@@ -195,6 +255,11 @@ ActiveRecord::Schema.define(version: 2021_09_04_015414) do
     t.date "start_date"
     t.date "end_date"
     t.float "billable_target_ratio"
+    t.bigint "task_id"
+    t.float "cost_per_hour"
+    t.string "asana_id"
+    t.index ["asana_id"], name: "index_team_members_on_asana_id", unique: true
+    t.index ["task_id"], name: "index_team_members_on_task_id"
   end
 
   create_table "time_entries", force: :cascade do |t|
@@ -223,6 +288,29 @@ ActiveRecord::Schema.define(version: 2021_09_04_015414) do
     t.index ["project_id"], name: "index_time_entries_on_project_id"
   end
 
+  create_table "timesheet_allocations", force: :cascade do |t|
+    t.bigint "timesheet_id", null: false
+    t.float "allocation"
+    t.bigint "project_id", null: false
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "task_id", null: false
+    t.index ["project_id"], name: "index_timesheet_allocations_on_project_id"
+    t.index ["task_id"], name: "index_timesheet_allocations_on_task_id"
+    t.index ["timesheet_id"], name: "index_timesheet_allocations_on_timesheet_id"
+  end
+
+  create_table "timesheets", force: :cascade do |t|
+    t.bigint "team_member_id", null: false
+    t.date "week"
+    t.float "non_working_days"
+    t.integer "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_member_id"], name: "index_timesheets_on_team_member_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -242,10 +330,21 @@ ActiveRecord::Schema.define(version: 2021_09_04_015414) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "asana_projects", "clients"
+  add_foreign_key "asana_tasks", "asana_projects"
+  add_foreign_key "asana_tasks", "clients"
+  add_foreign_key "asana_tasks", "team_members"
   add_foreign_key "contacts", "clients"
   add_foreign_key "contracts", "team_members"
   add_foreign_key "feedback_requests", "contacts"
   add_foreign_key "invoices", "clients"
   add_foreign_key "projects", "clients"
+  add_foreign_key "task_assignments", "projects"
+  add_foreign_key "task_assignments", "tasks"
+  add_foreign_key "team_members", "tasks"
   add_foreign_key "time_entries", "projects"
+  add_foreign_key "timesheet_allocations", "projects"
+  add_foreign_key "timesheet_allocations", "tasks"
+  add_foreign_key "timesheet_allocations", "timesheets"
+  add_foreign_key "timesheets", "team_members"
 end

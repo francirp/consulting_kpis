@@ -1,29 +1,17 @@
 desc "This task is called by the Heroku scheduler add-on"
-task :refresh_harvest_data => :environment do
-  puts "pulling users"
-  HarvestSync::CreateTeamMembers.new.call  
-  puts "pulling clients"
-  HarvestSync::PullClients.new.call
-  puts "pulling projects"
-  HarvestSync::PullProjects.new.call
-  puts "pulling invoices"
-  HarvestSync::PullInvoices.new.call
-  puts "pulling time entries"
-  HarvestSync::PullTimeEntries.new.call
-  puts "exporting data to google sheets"
+task :refresh_weekly_harvest_data => :environment do
+  start_date = Date.today - 8.days
+  RefreshHarvestData.new(start_date).call
+end
 
-  TeamMember.all.each do |team_member|
-    team_member.set_start_and_end_date
-  end
+task :refresh_monthly_harvest_data => :environment do
+  start_date = Date.today - 45.days
+  RefreshHarvestData.new(start_date).call
+end
 
-  hours_updater = ExportData::ToGoogleSheets::Hours.new
-  hours_updater.update
-
-  # TODO: leverage DB instead of Harvest API when pushing invoices to Google Sheets
-  invoice_updater = ExportData::ToGoogleSheets::Invoices.new 
-  invoice_updater.update
-
-  puts "done."
+task :refresh_asana_tasks => :environment do
+  start_date = Date.today.beginning_of_year
+  RefreshAsanaData.new(start_date).call
 end
 
 task :refresh_invoices => :environment do

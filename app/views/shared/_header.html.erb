@@ -15,8 +15,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="<%= 'active' if action_name == 'dashboard' %>"><%= link_to "Dashboard", dashboard_path %></li>
-        <li class="<%= 'active' if controller_name == 'clients' && action_name == 'index' %>"><%= link_to "Clients", clients_path %></li>
-        <li class="<%= 'active' if controller_name == 'projects' && action_name == 'index' %>"><%= link_to "Projects", projects_path %></li>
+        <li class="<%= 'active' if action_name == 'team_members' %>"><%= link_to "Employees", team_members_path %></li>
+        <li class="<%= 'active' if controller_name == 'clients' && action_name == 'index' %>"><%= link_to "Clients", clients_path %></li> 
         <li ><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
         <li class="filters">
           <%= render 'shared/filters' %>

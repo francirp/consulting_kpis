@@ -23,10 +23,14 @@ gem 'google_drive'
 gem 'google-api-client'
 gem 'httparty'
 gem 'nokogiri'
-gem "sprockets", "<4"
+gem 'sprockets', '<4'
 gem 'activeadmin'
 gem 'bootstrap-datepicker-rails'
 gem 'mjml-rails'
+gem 'chartkick'
+gem 'groupdate'
+gem 'memoist'
+gem 'activeadmin_addons'
 
 group :development do
   gem 'web-console'

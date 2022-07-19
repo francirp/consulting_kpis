@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :feedback_requests, only: [:show, :update] do
     get :success, on: :collection
   end
+  resources :team_members
+  resources :clients, only: [:index, :show]
 
   post '/update-report' => 'pages#update_report', as: :update_report
 

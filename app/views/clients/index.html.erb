@@ -1,23 +1,25 @@
+<div class="row">
+  <h1>Clients</h1>
+</div>
 
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>Client</th>
-      <th>Total Invoiced</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @clients.each do |client| %>
-      <% invoices = @invoices[client.id] %>
-      <% next unless invoices.present? %>   
+<div class="row">
+  <table class="table table-condensed">
+    <thead>
       <tr>
-        <td><%= client.name %></td>
-        <td><%= number_to_currency(invoices.sum(&:amount), precision: 0) %></td>
+        <th>Client</th>
+        <th>Revenue (Invoiced)</th>
+        <th>Dev Days Completed</th>
+        <th>Effective Rate</th>
       </tr>
-    <% end %>
-    <tr>
-      <td><strong>Total</strong></td>
-      <td><strong><%= number_to_currency(@invoices.values.flatten.sum(&:amount), precision: 0) %><strong></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <%= render 'metrics_by_client', metrics_by_client: @key_metrics.metrics_by_client %>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td><strong><%= number_to_currency(@key_metrics.revenue, precision: 0) %><strong></td>
+        <td><strong><%= number_with_precision(@key_metrics.dev_days, precision: 1) %><strong></td>
+        <td><strong><%= number_to_currency(@key_metrics.effective_rate, precision: 0) %><strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,38 @@
+<div class="row">
+  <h1><%= @team_member.name %></h1>
+</div>
+
+<div class="row">
+  <h2># Tasks by Week</h2>
+  <%= line_chart @employee_key_metrics.employee_completed_tasks.group_by_week(:completed_on).count %>
+</div>
+<div class="row">
+  <h2>Dev Days by Week</h2>
+  <%= line_chart @employee_key_metrics.employee_completed_tasks.group_by_week(:completed_on).sum(:dev_days) %>
+</div>
+
+<div class="row">
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>Client Revenue</th>     
+        <th>Project Dev Days</th>
+        <th>Employee Dev Days</th>
+        <th>Effective Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render 'clients/metrics_by_client', metrics_by_client: @employee_key_metrics.metrics_by_client %>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td><strong><%= number_to_currency(@employee_key_metrics.clients_revenue, precision: 0) %><strong></td>
+        <td>-</td>        
+        <td><%= @employee_key_metrics.dev_days > 0 ? number_with_precision(@employee_key_metrics.dev_days, precision: 1) : '-' %></td>        
+        <td><strong><%= number_to_currency(@employee_key_metrics.clients_effective_rate, precision: 0) %><strong></td>
+        <% if false %>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div>

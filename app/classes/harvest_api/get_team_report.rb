@@ -7,8 +7,7 @@ module HarvestApi
     end
 
     def call
-      res = client.get('/v2/reports/time/team', query: { from: '20210701', to: '20210702' })  
-      binding.pry
+      client.get('/v2/reports/time/team', query: { from: '20210701', to: '20210702' })  
     end
   end
 end

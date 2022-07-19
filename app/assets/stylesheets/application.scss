@@ -5,8 +5,25 @@
 .filters {
   padding-top: 10px;
   margin-left: 50px;
+
+  .datepicker {
+    width: 100px;
+  }
+
+  label {
+    font-weight: normal;
+    margin-left: 10px;
+  }
+
+  .submit-button {
+    margin-left: 10px;
+  }
 }
 
 .red {
   color: red;
+}
+
+.allocation-percent {
+  font-size: 10px;
 }

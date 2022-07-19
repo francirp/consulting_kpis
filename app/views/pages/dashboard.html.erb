@@ -3,43 +3,49 @@
 </div>
 
 <div class="row">
-  <h2>Gross Profit Performance</h2>
-  <ul>
-    <li> Total Hours Billed: <%= number(@key_metrics.hours_billed) %> </li>
-    <li> Total Revenue: <%= number_to_currency(@key_metrics.revenue, precision: 0) %></li>
-    <li> Total Effective Rate: <%= number_to_currency(@key_metrics.effective_rate, precision: 0) %></li>
-    <li> Total Utilization: <%= number_to_percentage(@key_metrics_no_contractors.utilization * 100, precision: 0) %></li>
-    <li> Total Hours Billed w/o Contractors: <%= number(@key_metrics_no_contractors.hours_billed) %></li>
-  </ul>
-</div>
-
-<div class="row">
-  <h2>Utilization by Team Member</h2>
+  <h2>Overall Performance</h2>
 
   <table class="table table-condensed">
     <thead>
       <tr>
-        <th>Team Member</th>
-        <th>Target Billable Ratio</th>
-        <th>Actual Billable Ratio</th>
-        <th>Variance to Target Ratio</th>
-        <th>Target Hours</th>
-        <th>Hours Billed</th>
-        <th>Variance to Target Hours %</th>
+        <th>Metric</th>
+        <th>Actual</th>
+        <th>Target</th>
+        <th>Variance</th>
       </tr>
     </thead>
     <tbody>
-      <% @key_metrics.hours_by_employee.each do |employee_metrics| %> 
-        <tr>
-          <td><%= employee_metrics.team_member.name %></td>
-          <td><%= number_to_percentage(employee_metrics.target_billable_ratio * 100, precision: 0) %></td>
-          <td><%= number_to_percentage(employee_metrics.actual_billable_ratio * 100, precision: 0) %></td>
-          <td class="<%= 'red' if employee_metrics.variance_to_target_ratio < 0 %>"><%= number_to_percentage(employee_metrics.variance_to_target_ratio * 100, precision: 0) %></td>
-          <td><%= number_with_precision(employee_metrics.target_hours, precision: 0) %></td>
-          <td><%= number_with_precision(employee_metrics.hours_billed, precision: 0) %></td>
-          <td class="<%= 'red' if employee_metrics.variance_to_target_hours < 0 %>"><%= number_with_precision(employee_metrics.variance_to_target_hours, precision: 0) %></td>
-        </tr>
-      <% end %>
+      <tr>
+        <td>Total Hours (including contractors)</td>
+        <td><%= number(@key_metrics.hours_billed) %></td>      
+        <td>-</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Employee Utilization</td>
+        <td>
+          <%= number_to_percentage(@key_metrics_no_contractors.net_utilization * 100, precision: 0) %> (<%= number(@key_metrics_no_contractors.hours_billed) %> hours)
+        </td>      
+        <td>
+          83% (<%= number(@key_metrics_no_contractors.target_hours_of_employees) %> hours)</td>
+        <td class="<%= 'red' if @key_metrics_no_contractors.target_hours_variance_percentage < 0 %>">
+          <%= number_to_percentage(@key_metrics_no_contractors.target_hours_variance_percentage * 100, precision: 0) %>
+        </td>
+      </tr>
+      <tr>
+        <td>Revenue</td>
+        <td><%= number_to_currency(@key_metrics.revenue, precision: 0) %></td>      
+        <td>-</td>
+        <td>-</td>
+      </tr> 
+      <tr>
+        <td>Effective Rate</td>
+        <td><%= number_to_currency(@key_metrics.effective_rate, precision: 0) %></td>      
+        <td>$160</td>
+        <td class="<%= 'red' if @key_metrics.effective_rate_variance_percentage < 0 %>">
+          <%= number_to_percentage(@key_metrics.effective_rate_variance_percentage * 100, precision: 0) %>
+        </td>
+      </tr>                 
     </tbody>
-  </table>
+  </table>  
 </div>
