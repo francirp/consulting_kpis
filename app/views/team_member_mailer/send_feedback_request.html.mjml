@@ -1,7 +1,7 @@
 <mj-section>
   <mj-column>
     <mj-text align="center">
-      <h1>How happy are you with LaunchPad Lab this month?</h1>
+      <h1>How happy are you with the <%= @client.name %> project?</h1>
       <div class="survey-options">
         <%= link_to(feedback_request_url(@feedback_request.token, rating: 1)) do %>
           <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-emoji-frown" viewBox="0 0 16 16">
@@ -26,7 +26,7 @@
         <% end %>
       </div>
 
-      <p class="anon">Your feedback is only visible to LaunchPad Lab leadership. This survey helps us ensure that we're always delivering a great experience to our clients.</p>
+      <p class="anon">Your feedback is only visible to LaunchPad Lab leadership. This survey helps us ensure everyone at LaunchPad Lab has a great experience on their projects.</p>
     </mj-text>
   </mj-column>
 </mj-section>

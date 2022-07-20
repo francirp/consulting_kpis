@@ -49,4 +49,8 @@ task :send_feedback_requests => :environment do
   Contact.all_ready_for_feedback_request.each do |contact|
     contact.send_feedback_request
   end
+
+  TeamMember.all_ready_for_feedback_request.each do |team_member|
+    team_member.send_feedback_request
+  end
 end

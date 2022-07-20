@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :feedback_request do
-    contact { nil }
+    surveyable { contact }
     date { Date.today }
   end
 end

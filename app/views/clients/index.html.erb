@@ -10,6 +10,8 @@
         <th>Revenue (Invoiced)</th>
         <th>Dev Days Completed</th>
         <th>Effective Rate</th>
+        <th>Recent Avg. Team Pulse</th>
+        <th>Recent Client Pulse</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +21,8 @@
         <td><strong><%= number_to_currency(@key_metrics.revenue, precision: 0) %><strong></td>
         <td><strong><%= number_with_precision(@key_metrics.dev_days, precision: 1) %><strong></td>
         <td><strong><%= number_to_currency(@key_metrics.effective_rate, precision: 0) %><strong></td>
+        <td></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
