@@ -1,5 +1,4 @@
 <% metrics_by_client.each do |client_key_metrics| %>
-  <%# has_invoices = client_key_metrics.client_invoices.any? %>   
   <tr>
     <td><%= link_to client_key_metrics.client.name, client_key_metrics.client %></td>
     <td><%= number_to_currency(client_key_metrics.revenue, precision: 0) %></td>

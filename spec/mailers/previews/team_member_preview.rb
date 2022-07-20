@@ -4,6 +4,6 @@ class TeamMemberPreview < ActionMailer::Preview
     team_member = TeamMember.find_by(first_name: 'dummy-person') || FactoryBot.create(:team_member, first_name: 'dummy-person')
     client = Client.find_by(name: 'dummy-client') || FactoryBot.create(:client, name: 'dummy-client')
     feedback_request = FactoryBot.create(:feedback_request, surveyable: team_member, client: client, date: Date.current)
-    ContactMailer.send_feedback_request("ryan@launchpadlab.com", feedback_request.id)
+    TeamMemberMailer.send_feedback_request("ryan@launchpadlab.com", feedback_request.id)
   end
 end
