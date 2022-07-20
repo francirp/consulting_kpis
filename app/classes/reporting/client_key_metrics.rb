@@ -17,6 +17,22 @@ module Reporting
       @team_member_hours = opts[:team_member_hours]
     end
 
+    def recent_average_team_pulse
+      all_feedback_requests = FeedbackRequest.where(client: client, surveyable_type: "TeamMember").recent
+      recent = all_feedback_requests.where("date >= ?", Date.current - 30.days)
+      ratings = recent.pluck("rating AS r").compact
+      return nil unless ratings.any?
+      ratings.reduce(:+) / ratings.size.to_f # get the average
+    end
+
+    def recent_client_pulse
+      all_feedback_requests = FeedbackRequest.where(client: client, surveyable_type: "Client").recent
+      recent = all_feedback_requests.where("date >= ?", Date.current - 30.days)
+      ratings = recent.pluck("rating AS r").compact
+      return nil unless ratings.any?
+      ratings.reduce(:+) / ratings.size.to_f # get the average
+    end    
+
     def revenue
       @revenue ||= client_invoices.sum(&:amount)
     end
@@ -26,6 +42,7 @@ module Reporting
     end
 
     def effective_rate
+      return nil unless hours_billed > 0
       @effective_rate ||= revenue / hours_billed
     end
 

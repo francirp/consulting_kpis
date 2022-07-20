@@ -1,0 +1,9 @@
+<% content_for :survey_header do %>
+  How happy are you with the <%= @client.name %> project?
+<% end %>
+
+<% content_for :survey_footer do %>
+  Your feedback is only visible to LaunchPad Lab leadership. This survey helps us ensure everyone at LaunchPad Lab has a great experience on their projects.
+<% end %>
+
+<%= render "shared/feedback_request.html.mjml" %>

@@ -1,4 +1,5 @@
 class TeamMember < ApplicationRecord
+  include Surveyable
   default_scope { order(first_name: :asc) }
   scope :contractors, -> { where(is_contractor: true) }
   scope :employees, -> { where.not(is_contractor: true) }
@@ -9,6 +10,14 @@ class TeamMember < ApplicationRecord
   has_many :asana_tasks
 
   before_save :set_end_date, unless: :is_active?
+
+  def time_entries_in_last_sprint
+    time_entries.billable.between(Date.current - 14.days, Date.current)
+  end
+
+  def clients_active_in_last_sprint
+    time_entries_in_last_sprint.includes(:client).joins(:client).map(&:client).uniq
+  end
 
   def cost_per_hour
     attributes[:cost_per_hour] || 0.0
@@ -35,5 +44,17 @@ class TeamMember < ApplicationRecord
 
   def set_end_date
     self.end_date = time_entries.latest.first.try(:spent_at)
+  end
+
+  def send_feedback_request
+    set_as_sent # from Surveyable
+    clients_active_in_last_sprint.each do |client|
+      feedback_request = FeedbackRequest.create(
+        surveyable: self,
+        date: Date.current,
+        client: client,
+      )
+      TeamMemberMailer.send_feedback_request(email, feedback_request.id).deliver_later
+    end
   end
 end
