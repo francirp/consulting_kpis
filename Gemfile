@@ -15,7 +15,7 @@ gem 'harvesting' # harvested is deprecated, moving away from it in favor of this
 gem 'pg'
 gem 'devise'
 gem 'figaro'
-gem 'bootstrap-sass'
+# gem 'bootstrap-sass'
 gem 'draper'
 gem 'decanter'
 gem 'google_drive'
@@ -31,6 +31,7 @@ gem 'chartkick'
 gem 'groupdate'
 gem 'memoist'
 gem 'activeadmin_addons'
+gem 'bootstrap'
 
 group :development do
   gem 'web-console'

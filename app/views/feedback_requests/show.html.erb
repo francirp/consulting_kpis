@@ -1,55 +1,19 @@
-<div class="container container--padded text-center">
-  <div class="header">
-    <svg xmlns="http://www.w3.org/2000/svg" width="105" height="105" fill="#1E60BD" class="bi bi-heart-fill" viewBox="0 0 16 16">
+<div class="px-4 py-5 my-5 text-center">
+  <div class="mb-3">
+    <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" fill="#1E60BD" class="bi bi-heart-fill" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
     </svg>
-
-    <h1>Want to share more?</h1>
-
-    <h4>Why did you choose <strong><%= @feedback_request.rating.titleize %></strong>? Choose all that apply.</h4>
   </div>
-
+  <h1 class="display-5 fw-bold mb-5">Why did you choose <strong><%= @feedback_request.rating.titleize %></strong>?</h1>
   <%= form_for(@feedback_request, url: feedback_request_path(@feedback_request.token), html: { id: "edit_feedback_request"}) do |f| %>
-    
-    <!--
-    <div class="checkboxes">
-      <div class="checkbox">
-        <%= f.check_box :communication %>
-        <%= f.label :communication %>
-      </div>
-
-      <div class="checkbox">
-        <%= f.check_box :management %>
-        <%= f.label :management %>
-      </div>
-
-      <div class="checkbox">
-        <%= f.check_box :team %>
-        <%= f.label :team %>
-      </div>
-
-      <div class="checkbox">
-        <%= f.check_box :results %>
-        <%= f.label :results %>
-      </div>
-
-      <div class="checkbox">
-        <%= f.check_box :timeline %>
-        <%= f.label :timeline %>
-      </div>
-
-      <div class="checkbox">
-        <%= f.check_box :other %>
-        <%= f.label :other %>
+    <div class="col-lg-6 mx-auto">
+      <div class="mb-5">
+        <%= f.label :comment, "Add a comment (optional)", class: "form-label" %>
+        <%= f.text_area :comment, as: :textarea, class: "form-control form-control-lg" %>
+      </div>      
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <%= f.submit "Submit", class: "btn btn-primary btn-lg px-4 gap-3" %>
       </div>
     </div>
-    -->
-
-    <div class="form-input">
-      <%= f.label :comment, "Add a comment" %>
-      <%= f.text_area :comment, as: :textarea %>
-    </div>
-
-    <%= f.submit "Submit", class: "button button--primary button--large" %>
   <% end %>
 </div>
